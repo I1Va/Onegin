@@ -1,11 +1,11 @@
 #include <cassert>
 #include <cstdlib>
 #include <stdio.h>
-#include <errno.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include "general.h"
 #include "storage_funcs.h"
@@ -148,10 +148,35 @@ const char *ni_strtok(const char *const str, const char *const delims) {
     return return_token_start;
 }
 
-// FIXME:
-int str_cmp(char *a, char *b) {
-    while (*a++ != '\0' && *b++ != '\0' && *a++ == *b++);
-    return *(a - 1) - *(b - 1);
+int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step) {
+    while (a != end_a && b != end_b) {
+        if (!isalpha(*a)) {
+            a += step;
+            continue;
+        }
+        if (!isalpha(*b)) {
+            b += step;
+            continue;
+        }
+        if (tolower(*a) != tolower(*b)) {
+            break;
+        }
+        a += step;
+        b += step;
+    }
+    return tolower(*a) - tolower(*b);
+}
+
+int str_cmp(const char *a, const char *b) {
+    const char *end_a = strchr(a, '\0');
+    const char *end_b = strchr(b, '\0');
+    return str_cmp__(a, b, end_a, end_b, 1);
+}
+
+int str_cmp_rev(const char *a, const char *b) {
+    const char *end_a = strchr(a, '\0');
+    const char *end_b = strchr(b, '\0');
+    return str_cmp__(end_a, end_b, a, b, -1);
 }
 
 int str_cpy(char *a, char *b) {
@@ -173,7 +198,7 @@ void bubble_sort(char data[][MAX_LINE_SZ]) {
     for (size_t i = 0; i < MAX_LINES_CNT - 1; i++) {
         // printf("i: %ld\n", i);
         for (size_t j = 0; j < MAX_LINES_CNT - 1; j++) {
-            if (str_cmp(data[j], data[j + 1]) > 0) {
+            if (str_cmp_rev(data[j], data[j + 1]) > 0) {
                 // printf("swap\n");
                 str_swap(data[j], data[j + 1]);
             }

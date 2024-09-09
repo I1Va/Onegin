@@ -3,7 +3,11 @@
 
 
 
-int str_cmp(char *a, char *b);
+int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step);
+
+int str_cmp(const char *a, const char *b);
+
+int str_cmp_rev(const char *a, const char *b);
 
 int str_cpy(char *a, char *b);
 
@@ -28,3 +32,4 @@ const char *start_token(const char *str, const char *const delims);
 const char *end_token(const char *str, const char *const delims);
 
 const char *ni_strtok(const char *const str, const char *const delims);
+
