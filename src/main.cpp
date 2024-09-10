@@ -10,13 +10,17 @@
 
 #include "processing_funcs.h"
 #include "storage_funcs.h"
+#include "general.h"
 #include "output_funcs.h"
 
 int main() {
-    // TODO: протестить сампоисные строковые функции
-    // onegin_eng.txt
     text_data* data = input_data("./test.txt");
-    data->arr_sorted = bubble_sort(data);
+    if (data == NULL) {
+        debug("input data error\n");
+        return EXIT_FAILURE;
+    }
+
+    data->arr_sorted = bubble_sort(data, true);
 
     print_text_arr(data->arr_sorted, data->n_lines);
 

@@ -13,7 +13,7 @@ int str_cpy(char *a, char *b);
 
 int str_swap(char ***a, char ***b);
 
-char ** bubble_sort(const text_data* data);
+char ** bubble_sort(const text_data* data, bool reverse);
 
 size_t ni_str_len(const char *a);
 

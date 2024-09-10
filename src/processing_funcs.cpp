@@ -84,10 +84,15 @@ char *ni_strstr(char *haystack, char *needle) {
 }
 
 bool str_contains_char(const char *const str, const char c) {
+    assert(str != NULL);
+
     return (strchr(str, c) != NULL);
 }
 
 bool is_intersection_str(char *source, const char* pattern) {
+    assert(source != NULL);
+    assert(pattern != NULL);
+
     while(*source != '\0') {
         if (str_contains_char(pattern, *source)) {
             return true;
@@ -98,6 +103,9 @@ bool is_intersection_str(char *source, const char* pattern) {
 }
 
 const char *start_token(const char *str, const char *const delims) {
+    assert(str != NULL);
+    assert(delims != NULL);
+
     while (*str != '\0') {
         if (str_contains_char(delims, *str)) {
             str++; // Пропускаем разделительные симовлы из delims
@@ -109,6 +117,8 @@ const char *start_token(const char *str, const char *const delims) {
 }
 
 size_t str_cnt_chr(const char *string, const char c) {
+    assert(string != NULL);
+
     size_t c_cnt = 0;
     while (*string) {
         c_cnt += (*string++ == c);
@@ -117,6 +127,9 @@ size_t str_cnt_chr(const char *string, const char c) {
 }
 
 const char *end_token(const char *str, const char *const delims) {
+    assert(str != NULL);
+    assert(delims != NULL);
+
     while (*str != '\0') {
         if (!str_contains_char(delims, *str)) { // Идем по токену
             str++;
@@ -152,6 +165,11 @@ const char *ni_strtok(const char *const str, const char *const delims) { // FIXM
 }
 
 int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step) {
+    assert(a != NULL);
+    assert(b != NULL);
+    assert(end_a != NULL);
+    assert(end_b != NULL);
+
     while (a != end_a && b != end_b) {
         if (!isalpha(*a)) {
             a += step;
@@ -171,18 +189,26 @@ int str_cmp__(const char *a, const char *b, const char *const end_a, const char 
 }
 
 int str_cmp(const char *a, const char *b) {
+    assert(a != NULL);
+    assert(b != NULL);
+
     const char *end_a = strchr(a, '\0');
     const char *end_b = strchr(b, '\0');
     return str_cmp__(a, b, end_a, end_b, 1);
 }
 
 int str_cmp_rev(const char *a, const char *b) {
+    assert(a != NULL);
+    assert(b != NULL);
+
     const char *end_a = strchr(a, '\0');
     const char *end_b = strchr(b, '\0');
     return str_cmp__(end_a, end_b, a, b, -1);
 }
 
 void string_to_lower(char *string) {
+    assert(string != NULL);
+
     while (*string) {
         *string = (char) tolower((int) *string);
         string++;
@@ -210,30 +236,34 @@ char *remove_extra_spaces(char *string) { // FIXME: возможна некор�
     return string;
 }
 
-// int str_cpy(char *a, char *b) {
-//     for (size_t i = 0; i < MAX_LINE_SZ; i++) {
-//         *a++ = *b++;
-//     }
-//     return RETURN_TRUE;
-// }
-
 int str_swap(char **a, char **b) {
+    assert(a != NULL);
+    assert(b != NULL);
+
     char *c = *a;
     *a = *b;
     *b = c;
     return RETURN_TRUE;
 }
 
-char ** bubble_sort(const text_data* data) {
+char ** bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
+    assert(data != NULL);
+
     char ** sorted_arr = data->arr_orig;
     for (size_t i = 0; i < data->n_lines; i++) {
         for (size_t j = 0; j < data->n_lines - 1; j++) {
             // printf("%ld %ld\n", i, j);
-            if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-                str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+            if (reverse) {
+                if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+                }
+            } else {
+                if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+                }
             }
+
         }
     }
     return sorted_arr;
 }
-

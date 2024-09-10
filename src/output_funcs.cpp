@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstddef>
 #include <stdio.h>
 
@@ -6,6 +7,8 @@
 #include "output_funcs.h"
 
 int print_ascii_chars(char *string, const size_t n) {
+    assert(string != NULL);
+
     for (size_t i = 0; i < n; i++) {
         const char cur = *(string + i);
         if (cur == '\n') {
@@ -26,6 +29,8 @@ int print_ascii_chars(char *string, const size_t n) {
 }
 
 int print_text_arr(char ** arr, const size_t n) {
+    assert(arr != NULL);
+
     for (size_t i = 0; i < n; i++) {
         if (*arr[i]) {
             printf("%s\n", arr[i]);
