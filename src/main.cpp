@@ -14,27 +14,11 @@
 
 int main() {
     // TODO: протестить сампоисные строковые функции
-    char data[MAX_LINES_CNT][MAX_LINE_SZ] = {}; // TODO: динамическая память
-    FILE *file = fopen("./onegin_eng.txt", "r");
-    if (file == NULL) {
-        strerror(errno);
-        return EXIT_FAILURE;
-    }
-    input_data(file, data);
-    for (size_t i = 0; i < MAX_LINE_SZ; i++) {
-        remove_extra_spaces(data[i]);
-    }
-    bubble_sort(data);
-    for (size_t i = 0; i < MAX_LINES_CNT; i++) {
-        printf("data[%ld]: %s", i, data[i]);
-    }
-    // fprint_data(stdout, data);
+    // onegin_eng.txt
+    text_data* data = input_data("./test.txt");
+    data->arr_sorted = bubble_sort(data);
 
-    fclose(file);
-    printf("res: %d\n", strcmp(data[64], data[65]));
-    printf("data[64]: %s\n", data[64]);
-    printf("data[65]: %s\n", data[65]);
-    printf("data[64]: %c\n", *data[64]);
-    printf("data[65]: %c\n", *data[65]);
+    print_text_arr(data->arr_sorted, data->n_lines);
+
     return EXIT_SUCCESS;
 }

@@ -29,7 +29,7 @@ build:
 
 debug:
 	$(CC) $(SRC_FILES) -O0 -o $(SRC_OUTPUTFILE) $(DEFINE_FLAGS) $(INCLUDE_FLAGS) $(CC_FLAGS)
-	./$(SRC_OUTPUTFILE) < matrix.txt;
+	./$(SRC_OUTPUTFILE)
 
 launch: build
 	./$(SRC_OUTPUTFILE)

@@ -1,14 +1,19 @@
 #ifndef STORAGE_FUNCS_H
 #define STORAGE_FUNCS_H
 
+#include <cstddef>
 #include <string.h>
 #include <stdio.h>
 
-const size_t MAX_LINE_SZ = 512;
-const size_t MAX_LINES_CNT = 512;
+struct text_data {
+    char *data;
+    char **arr_orig;
+    char **arr_sorted;
+    char **arr_sorted_rev;
+    size_t n_lines;
+};
 
-int input_data(FILE* stream, char data[][MAX_LINE_SZ]);
 
-int remove_extra_spaces(char *line);
+text_data *input_data(const char *const path);
 
 #endif // STORAGE_FUNCS_H
