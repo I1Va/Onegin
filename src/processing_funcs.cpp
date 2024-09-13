@@ -12,6 +12,7 @@
 #include "storage_funcs.h"
 #include "output_funcs.h"
 #include "processing_funcs.h"
+#include "error_processing.h"
 
 size_t ni_str_len(const char *a) {
     assert(a != NULL);
@@ -25,7 +26,7 @@ size_t ni_str_len(const char *a) {
 
 char *ni_strncpy(char *destination, const char *source, size_t num) {
     assert(destination != NULL);
-    assert(destination != NULL);
+    assert(source != NULL);
 
     while (num-- && *source != '\0') {
         *destination++ = *source++;

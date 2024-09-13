@@ -12,9 +12,12 @@
 #include "storage_funcs.h"
 #include "general.h"
 #include "output_funcs.h"
+#include "error_processing.h"
+
 
 int main() {
-    text_data* data = input_data("./test.txt");
+    printf("%s\n", get_descr());
+    text_data* data = input_data("./test.txt"); // TODO: передачу названия файла через командную строку
     if (data == NULL) {
         debug("input data error\n");
         return EXIT_FAILURE;
@@ -23,6 +26,6 @@ int main() {
     data->arr_sorted = bubble_sort(data, true);
 
     print_text_arr(data->arr_sorted, data->n_lines);
-
+    // TODO: создать деструктор для text_data
     return EXIT_SUCCESS;
 }

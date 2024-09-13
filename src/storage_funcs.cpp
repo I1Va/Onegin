@@ -15,10 +15,26 @@
 #include "processing_funcs.h"
 #include "storage_funcs.h"
 #include "output_funcs.h"
+#include "allocation_funcs.h"
+
+size_t file_sz(const char *const path) {
+    struct stat buf = {};
+    if (stat(path, &buf) != 0) {
+        strerror(errno);
+        debug("stat error");
+        return 0;
+    }
+    return (size_t) buf.st_size;
+}
+// TODO: сделать enum OneginError* error
+
+// void place_pointers(char *data_ptr) {
+
+// }
 
 text_data *input_data(const char *const path) { // FIXME: как делать FREE? Не могу применить goto, так как есть инициализация переменных
     assert(path != NULL);
-    debug("cur path: '%s'\n", path);
+    debug("cur path: '%s'\n", path); // TODO: разбить на более мелкие функции
 
     text_data *text_data_ptr = (text_data *) calloc(1, sizeof(text_data));
     if (text_data_ptr == NULL) {
@@ -26,23 +42,19 @@ text_data *input_data(const char *const path) { // FIXME: как делать FR
         return NULL;
     };
 
-    struct stat buf = {}; // TODO: сделать функцию для размера файла
-    if (stat(path, &buf) != 0) {
-        strerror(errno);
-        debug("stat error");
-        return NULL;
-    }
-    size_t file_byte_sz = (size_t) buf.st_size + 1;
+
+    size_t file_byte_sz = (size_t) file_sz(path) + 1; // TODO: добавить enum ошибок
+    assert(file_byte_sz != 1);
 
     char *data_start = (char *) calloc(file_byte_sz, sizeof(char)); // file_sz - кол-во байт
     if (data_start == NULL) {
-        debug("data_start calloc error");
+        debug("data_start calloc error\n");
         return NULL;
     }
 
     FILE *file = fopen(path, "rb");
-    if (file == NULL) {
-        strerror(errno); // TODO: сделать printf strerror
+    if (file == NULL) { // TODO: исправить
+        debug("error: %s\n", strerror(errno)); // TODO: сделать printf strerror
         FREE(data_start);
         return NULL;
     }
@@ -52,21 +64,19 @@ text_data *input_data(const char *const path) { // FIXME: как делать FR
 
     *(data_start + file_byte_sz - 1) = '\n';
 
-    size_t n_lines = str_cnt_chr(data_start, '\n');
-
     if (fclose(file) != 0) {
         debug("fclose error");
         return NULL;
     }
 
-    char ** arr_orig = (char **) calloc(n_lines, sizeof(char *));
+    size_t n_lines = str_cnt_chr(data_start, '\n');
+    char **arr_orig = (char **) calloc(n_lines, sizeof(char *));
     if (arr_orig == NULL) {
-        strerror(errno);
+        debug("error: %s\n", strerror(errno));
         FREE(data_start);
         FREE(text_data_ptr);
         return NULL;
     }
-
     // print_ascii_chars(data_start, file_byte_sz);
 
     size_t line_idx = 0;

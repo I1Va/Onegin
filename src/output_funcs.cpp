@@ -1,12 +1,14 @@
 #include <cassert>
 #include <cstddef>
 #include <stdio.h>
+#include <system_error>
 
 #include "general.h"
 #include "storage_funcs.h"
 #include "output_funcs.h"
+#include "error_processing.h"
 
-int print_ascii_chars(char *string, const size_t n) {
+err_code print_ascii_chars(char *string, const size_t n) {
     assert(string != NULL);
 
     for (size_t i = 0; i < n; i++) {
@@ -25,7 +27,7 @@ int print_ascii_chars(char *string, const size_t n) {
         }
     }
     printf("\n");
-    return RETURN_TRUE;
+    return ERR_OK;
 }
 
 int print_text_arr(char ** arr, const size_t n) {

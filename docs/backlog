@@ -19,3 +19,15 @@
 
 // TODO: документацию
 
+
+//TODO: убрать пробелы перед блоком функций while_(...)
+
+// TODO: сделать обработку ошибок формата
+enum OneginError {
+    as = 1,
+    agg = 2,
+};
+
+enum OneginError error = ONEGIN_ERROR_NO;
+kckjAC (&error);
+print_error (error);

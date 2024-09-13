@@ -1,3 +1,6 @@
+#ifndef PROCESSING_FUNCS_H
+#define PROCESSING_FUNCS_H
+
 #include "storage_funcs.h"
 #include <stdio.h>
 
@@ -11,7 +14,7 @@ int str_cmp_rev(const char *a, const char *b);
 
 int str_cpy(char *a, char *b);
 
-int str_swap(char ***a, char ***b);
+int str_swap(char **a, char **b);
 
 char ** bubble_sort(const text_data* data, bool reverse);
 
@@ -40,3 +43,5 @@ void string_to_lower(char *string);
 bool letters_in_string(char *string, const char end_char);
 
 char *remove_extra_spaces(char *string);
+
+#endif // PROCESSING_FUNCS_H

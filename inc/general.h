@@ -17,10 +17,11 @@
 #define fprintf_yel(stream, str_, ...) fprintf(stream, YEL str_ WHT, ##__VA_ARGS__)
 
 
-#define FREE(ptr)           \
+#define FREE(ptr)          \
     do {                    \
         free(ptr); ptr = NULL; \
     } while(0)
+
 
 /*
 #define FREE(ptr)                \

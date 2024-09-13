@@ -16,4 +16,6 @@ struct text_data {
 
 text_data *input_data(const char *const path);
 
+size_t file_sz(const char *const path);
+
 #endif // STORAGE_FUNCS_H
