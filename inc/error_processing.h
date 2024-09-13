@@ -1,6 +1,9 @@
 #ifndef ERROR_PROCESSING_H
 #define ERROR_PROCESSING_H
 
+#include <stdio.h>
+
+#include "general.h"
 
 enum err_code {
     ERR_OK = 0,
@@ -15,9 +18,11 @@ enum err_code {
 
 const char *get_descr(enum err_code err = ERR_UNKNOWN);
 
+int fprintf_abort(const char file_name[], const int line, const char function_name[], const char error_descr[]);
+
 
 #ifndef _REALIZE
-    #define asserted(code) || fprintf_red(stderr, "[%s: %d]; err_info: %s\n", __PRETTY_FUNCTION__, __LINE__, get_descr(code)); abort();
+    #define asserted(code) ? 1 : fprintf_abort(__FILE_NAME__, __LINE__, __PRETTY_FUNCTION__, get_descr(code));
 #else
     #define asserted(code) ;
 #endif // _REALIZE

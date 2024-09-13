@@ -34,7 +34,6 @@ char **place_pointers(char *const data_start, const size_t n_lines, const size_t
         debug("error: %s\n", strerror(errno));
         return 0;
     }
-    print_ascii_chars(data_start, file_byte_sz + 1);
     size_t line_idx = 0;
     char *data_curptr = data_start;
 
@@ -72,7 +71,7 @@ size_t input_data(const char *path, char **data_start) {
 }
 
 err_code input_text_data(const char *const path, text_data **text) {
-    assert(path != NULL);
+    path == NULL asserted(ERR_NULLPTR);
     debug("cur path: '%s'\n", path);
 
     text_data *text_data_ptr = (text_data *) calloc(1, sizeof(text_data));
@@ -93,7 +92,6 @@ err_code input_text_data(const char *const path, text_data **text) {
 
     size_t n_lines = str_cnt_chr(data_start, '\n');
     char **arr_orig = place_pointers(data_start, n_lines, file_byte_sz);
-    // print_ascii_chars(data_start, file_byte_sz);
 
     text_data_ptr->data = data_start;
     text_data_ptr->arr_orig = arr_orig;
