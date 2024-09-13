@@ -16,14 +16,13 @@
 
 
 int main() {
-    printf("%s\n", get_descr());
-    text_data* data = input_data("./test.txt"); // TODO: передачу названия файла через командную строку
+    text_data* data = input_text_data("./test.txt"); // TODO: передачу названия файла через командную строку
     if (data == NULL) {
         debug("input data error\n");
         return EXIT_FAILURE;
     }
 
-    data->arr_sorted = bubble_sort(data, true);
+    data->arr_sorted = bubble_sort(data, false);
 
     print_text_arr(data->arr_sorted, data->n_lines);
     // TODO: создать деструктор для text_data

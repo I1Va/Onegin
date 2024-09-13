@@ -11,6 +11,7 @@
 #include "general.h"
 #include "storage_funcs.h"
 #include "output_funcs.h"
+
 #include "processing_funcs.h"
 #include "error_processing.h"
 
@@ -250,7 +251,7 @@ int str_swap(char **a, char **b) {
 char ** bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
     assert(data != NULL);
 
-    char ** sorted_arr = data->arr_orig;
+    char **sorted_arr = data->arr_orig;
     for (size_t i = 0; i < data->n_lines; i++) {
         for (size_t j = 0; j < data->n_lines - 1; j++) {
             // printf("%ld %ld\n", i, j);
