@@ -34,9 +34,17 @@ int print_text_arr(char ** arr, const size_t n) {
     assert(arr != NULL);
 
     for (size_t i = 0; i < n; i++) {
-        if (*arr[i]) {
-            printf("%s\n", arr[i]);
-        }
+        // debug("idx: %ld: ", i);
+        printf("%s\n", arr[i]);
     }
     return RETURN_TRUE;
 }
+
+void printf_un_end(char *ptr, const char end) {
+    printf("line: \"");
+    while (*ptr != end) {
+        putchar(*ptr++);
+    }
+    printf("\"\n");
+}
+

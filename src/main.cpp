@@ -16,15 +16,17 @@
 
 
 int main() {
-    text_data* data = input_text_data("./test.txt"); // TODO: передачу названия файла через командную строку
+    text_data* data = NULL;
+    if (input_text_data("./test.txt", &data) != ERR_OK) {
+        return 1;
+    } // TODO: передачу названия файла через командную строку
     if (data == NULL) {
         debug("input data error\n");
         return EXIT_FAILURE;
     }
 
-    data->arr_sorted = bubble_sort(data, false);
-
-    print_text_arr(data->arr_sorted, data->n_lines);
+    // data->arr_sorted = bubble_sort(data, false);
+    print_text_arr(data->arr_orig, data->n_lines);
     // TODO: создать деструктор для text_data
     return EXIT_SUCCESS;
 }
