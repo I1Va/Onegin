@@ -10,9 +10,11 @@ const char *get_descr(enum err_code err) {
         DESCR_(ERR_UNKNOWN)
         DESCR_(ERR_CALLOC)
         DESCR_(ERR_NULLPTR)
-        DESCR_(ERR_STAT_ERROR)
+        DESCR_(ERR_STAT)
         DESCR_(ERR_INPUT_DATA)
         DESCR_(ERR_MEM)
+        DESCR_(ERR_FILE_CLOSE)
+        DESCR_(ERR_FILE_OPEN)
         default: return "???";
     }
 }

@@ -16,18 +16,14 @@
 
 
 int main() {
+    err_code last_err = ERR_OK;
     text_data* data = NULL;
-    err_code cur = input_text_data("./test.txt", &data);
+    input_text_data("./test.txt", &data, &last_err);
 
-    printf("s: %s\n", get_descr(cur));
-    if (cur != ERR_OK) {
-
+    if (last_err != ERR_OK) {
+        DEBUG_ERROR(last_err);
         return EXIT_FAILURE;
     } // TODO: передачу названия файла через командную строку
-    if (data == NULL) {
-        debug("input data error\n");
-        return EXIT_FAILURE;
-    }
 
     // data->arr_sorted = bubble_sort(data, false);
     print_text_arr(data->arr_orig, data->n_lines);
