@@ -36,7 +36,7 @@ const char *end_token(const char *str, const char *const delims);
 
 const char *ni_strtok(const char *const str, const char *const delims);
 
-size_t str_cnt_chr(const char *string, const char c);
+size_t str_cnt_chr(const char *string, const char c, size_t n);
 
 void string_to_lower(char *string);
 

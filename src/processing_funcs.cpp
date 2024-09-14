@@ -118,11 +118,10 @@ const char *start_token(const char *str, const char *const delims) {
     return NULL; // В строке нет следующего токена
 }
 
-size_t str_cnt_chr(const char *string, const char c) {
+size_t str_cnt_chr(const char *string, const char c, size_t n) {
     assert(string != NULL);
-
     size_t c_cnt = 0;
-    while (*string) {
+    while (n--) {
         c_cnt += (*string++ == c);
     }
     return c_cnt;

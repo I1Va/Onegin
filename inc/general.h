@@ -17,12 +17,10 @@
 #define fprintf_yel(stream, str_, ...) fprintf(stream, YEL str_ WHT, ##__VA_ARGS__)
 
 
-#define FREE(ptr)          \
-    do {                    \
+#define FREE(ptr)              \
+    do {                       \
         free(ptr); ptr = NULL; \
     } while(0)
-
-
 /*
 #define FREE(ptr)                \
     ({                           \
@@ -40,7 +38,7 @@ enum RETURN_STATES {
 };
 
 #ifdef _DEBUG
-#define debug(str_, ...) fprintf_red(stderr, "[%s: %d] " str_, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define debug(str_, ...) fprintf_red(stderr, "{%s}; [%s: %d]; " str_ "\n", __FILE_NAME__, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define debug(str_, ...)
 #endif // _DEBUG

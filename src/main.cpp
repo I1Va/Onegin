@@ -17,8 +17,12 @@
 
 int main() {
     text_data* data = NULL;
-    if (input_text_data("./test.txt", &data) != ERR_OK) {
-        return 1;
+    err_code cur = input_text_data("./test.txt", &data);
+
+    printf("s: %s\n", get_descr(cur));
+    if (cur != ERR_OK) {
+
+        return EXIT_FAILURE;
     } // TODO: передачу названия файла через командную строку
     if (data == NULL) {
         debug("input data error\n");
@@ -27,6 +31,6 @@ int main() {
 
     // data->arr_sorted = bubble_sort(data, false);
     print_text_arr(data->arr_orig, data->n_lines);
-    // TODO: создать деструктор для text_data
+    text_data_destructor(data);
     return EXIT_SUCCESS;
 }

@@ -37,3 +37,12 @@ doxygen
 //         ptr = NULL;              \
 //         ptr__                    \
 //     })
+
+
+
+@./a.out - не выводит stderr
+
+make
+
+make debug
+

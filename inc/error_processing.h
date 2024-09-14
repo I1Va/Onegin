@@ -20,13 +20,15 @@ const char *get_descr(enum err_code err = ERR_UNKNOWN);
 
 int fprintf_abort(const char file_name[], const int line, const char function_name[], const char error_descr[]);
 
+err_code fprintf_return(const char file_name[], const int line, const char function_name[], const err_code code);
 
-#ifndef _REALIZE
-    #define asserted(code) ? 1 : fprintf_abort(__FILE_NAME__, __LINE__, __PRETTY_FUNCTION__, get_descr(code));
-#else
-    #define asserted(code) ;
-#endif // _REALIZE
+// #ifndef _REALIZE
+//     #define asserted(code) ? 1 : printf_red(stderr, "{%s}; [%s: %d]; err_info: %s\n", __FILE_NAME__, __PRETTY_FUNCTION__, __LINE__, get_descr(code));
+// #else
+//     #define asserted(code) ;
+// #endif // _REALIZE
 
-#define error_pull_up(code) || fprintf_red(stderr, "{%s}; [%s: %d]; err_info: %s\n", __FILE_NAME__, __PRETTY_FUNCTION__, __LINE__, get_descr(code)); return code;
+
+// #define error_pull_up(condition, code) if (!condition) {fprintf_red(stderr, "{%s}; [%s: %d]; err_info: %s\n", __FILE_NAME__, __PRETTY_FUNCTION__, __LINE__, get_descr(code)); return code;}
 
 #endif // ERROR_PROCESSING_H

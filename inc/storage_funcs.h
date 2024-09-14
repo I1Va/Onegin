@@ -14,6 +14,9 @@ struct text_data {
     size_t n_lines;
 };
 
+void copy_ptr_arr(char **dest, char **source, size_t n);
+
+void text_data_destructor(text_data *text);
 
 err_code input_text_data(const char *const path, text_data **text);
 
