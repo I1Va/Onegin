@@ -3,7 +3,6 @@
   "directory": "/home/ivana/projects/Onegin",
   "arguments": [
    "g++",
-   "src/allocation_funcs.cpp",
    "src/error_processing.cpp",
    "src/main.cpp",
    "src/output_funcs.cpp",

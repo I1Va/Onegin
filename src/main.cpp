@@ -19,14 +19,16 @@ int main() {
     err_code last_err = ERR_OK;
     text_data* data = NULL;
     input_text_data("./test.txt", &data, &last_err);
-
+    DEBUG_ERROR(last_err)
     if (last_err != ERR_OK) {
-        DEBUG_ERROR(last_err);
+        DEBUG_ERROR(last_err)
         return EXIT_FAILURE;
     } // TODO: передачу названия файла через командную строку
 
     // data->arr_sorted = bubble_sort(data, false);
+
     print_text_arr(data->arr_orig, data->n_lines);
+
     text_data_destructor(data);
     return EXIT_SUCCESS;
 }

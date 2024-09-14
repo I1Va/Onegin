@@ -32,6 +32,7 @@ size_t get_file_sz(const char *const path, err_code *return_err) {
         DEBUG_ERROR(ERR_STAT)
         return 0;
     }
+
     return (size_t) buf.st_size;
 }
 
@@ -86,47 +87,70 @@ void copy_ptr_arr(char **dest, char **source, size_t n) {
 size_t input_text_data(const char *const path, text_data **text, err_code *return_err) {
     err_code last_err = ERR_OK;
 
+    text_data *text_data_ptr = NULL;
+    char *data_start = NULL;
+    char **arr_orig = NULL;
+    char **arr_sorted = NULL;
+    char **arr_sorted_rev = NULL;
+    size_t file_sz = 0;
+    size_t n_lines = 0;
+
+
     if (path == NULL) {
+        *return_err = ERR_NULLPTR;
         DEBUG_ERROR(ERR_NULLPTR);
-        *return_err = ERR_NULLPTR;
-        return 0;
+        goto END_POINT_0;
     }
 
-    debug("cur path: '%s'\n", path);
+    fprintf_yel(stderr, "cur_path: %s\n\n", path);
 
-    text_data *text_data_ptr = (text_data *) calloc(1, sizeof(text_data));
+    text_data_ptr = (text_data *) calloc(1, sizeof(text_data));
     if (text_data_ptr == NULL) {
-        DEBUG_ERROR(ERR_NULLPTR)
         *return_err = ERR_NULLPTR;
-        return 0;
+        DEBUG_ERROR(ERR_NULLPTR)
+        goto END_POINT_1;
     }
 
-    // TODO: можно проинициализировать в начале и использовать goto для освобождения памяти
-    size_t file_sz = get_file_sz(path, &last_err) + 1;
+    file_sz = get_file_sz(path, &last_err) + 1;
 
-    char *data_start = (char *) calloc(file_sz, sizeof(char)); // get_file_sz - кол-во байт
+    data_start = (char *) calloc(file_sz, sizeof(char));
     if (data_start == NULL) {
-        DEBUG_ERROR(ERR_NULLPTR)
         *return_err = ERR_NULLPTR;
-        return 0;
+        DEBUG_ERROR(ERR_NULLPTR)
+        goto END_POINT_2;
+
     }
+
     input_data(path, &data_start, file_sz, &last_err);
     if (last_err != ERR_OK) {
-        DEBUG_ERROR(ERR_OK)
         *return_err = last_err;
-        return 0;
+        DEBUG_ERROR(ERR_OK)
+        goto END_POINT_3;
     }
 
-    size_t n_lines = str_cnt_chr(data_start, '\n', file_sz);
+    n_lines = str_cnt_chr(data_start, '\n', file_sz);
 
-    char **arr_orig = place_pointers(data_start, n_lines, file_sz, &last_err);
+    arr_orig = place_pointers(data_start, n_lines, file_sz, &last_err);
     if (last_err != ERR_OK) {
-        DEBUG_ERROR(last_err);
-        return 0;
+        *return_err = last_err;
+        DEBUG_ERROR(last_err)
+        goto END_POINT_4;
     }
-    char **arr_sorted = (char **) calloc(n_lines, sizeof(char *));
+
+    arr_sorted = (char **) calloc(n_lines, sizeof(char *));
+    if (arr_sorted == NULL) {
+        *return_err = ERR_CALLOC;
+        DEBUG_ERROR(ERR_CALLOC)
+        goto END_POINT_5;
+    }
     copy_ptr_arr(arr_sorted, arr_orig, n_lines);
-    char **arr_sorted_rev = (char **) calloc(n_lines, sizeof(char *));
+
+    arr_sorted_rev = (char **) calloc(n_lines, sizeof(char *));
+    if (arr_sorted_rev == NULL) {
+        *return_err = ERR_CALLOC;
+        DEBUG_ERROR(ERR_CALLOC);
+        goto END_POINT_6;
+    }
     copy_ptr_arr(arr_sorted_rev, arr_orig, n_lines);
 
     text_data_ptr->data = data_start;
@@ -136,5 +160,24 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
     text_data_ptr->n_lines = n_lines;
     *text = text_data_ptr;
 
-    return ERR_OK;
+    return file_sz;
+
+    // ZONE OF PTR FREE
+
+    END_POINT_6:
+    FREE(arr_sorted);
+    END_POINT_5:
+    END_POINT_4:
+    END_POINT_3:
+    FREE(data_start);
+    END_POINT_2:
+    FREE(text_data_ptr);
+    END_POINT_1:
+    END_POINT_0:
+
+    return 0;
+
+
+
+
 }

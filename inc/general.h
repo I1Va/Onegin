@@ -20,7 +20,9 @@
 #define FREE(ptr)              \
     do {                       \
         free(ptr); ptr = NULL; \
-    } while(0)
+    } while(0);
+
+
 /*
 #define FREE(ptr)                \
     ({                           \
