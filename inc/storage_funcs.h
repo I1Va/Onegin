@@ -32,6 +32,6 @@ size_t get_file_sz(const char *const path, err_code *return_err);
 
 line_data *line_data_create(const size_t n_lines, const line_data* src = NULL);
 
-void line_data_delete(line_data *ptr);
+void line_data_destructor(line_data *ptr);
 
 #endif // STORAGE_FUNCS_H

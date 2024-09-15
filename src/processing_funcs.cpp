@@ -228,11 +228,6 @@ void str_swap(line_data *a, line_data *b) {
     *b = c;
 }
 
-void line_data_cpy(line_data *dest, line_data *src) {
-    dest->len = src->len;
-    dest->ptr = src->ptr;
-}
-
 void bubble_sort(line_data* data, size_t n_lines, int (*comp)(line_data a, line_data b)) { // TODO: сделать функцию с шаблонами
     assert(data != NULL);
 

@@ -25,7 +25,7 @@ line_data *line_data_create(const size_t n_lines, const line_data* src) {
     return data; // WARNING: скопирует только первые n_lines из src
 }
 
-void line_data_delete(line_data *ptr) {
+void line_data_destructor(line_data *ptr) {
     FREE(ptr);
 }
 

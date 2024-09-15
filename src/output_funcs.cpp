@@ -30,7 +30,7 @@ void fprint_ascii_chars(FILE *stream, char *string, const size_t n) {
     fprintf(stream, "\n");
 }
 
-void print_text_arr(line_data *arr, const size_t n, bool only_syms, bool del_borders) {
+void fprint_text_arr(FILE* stream, line_data *arr, const size_t n, bool only_syms, bool del_borders) {
     assert(arr != NULL);
 
     for (size_t i = 0; i < n; i++) {
@@ -48,15 +48,12 @@ void print_text_arr(line_data *arr, const size_t n, bool only_syms, bool del_bor
             while (!isalpha(arr[i].ptr[end_j])) {
                 end_j--;
             }
-            // for (size_t j = 0; j < max_line_sz - (end_j - start_j + 1); j++) {
-            //     printf(" ");
-            // }
             for (size_t j = start_j; j <= end_j; j++) {
-                printf("%c", arr[i].ptr[j]);
+                fprintf(stream, "%c", arr[i].ptr[j]);
             }
-            printf("\n");
+            fprintf(stream, "\n");
         } else {
-            printf("%s\n", arr[i].ptr);
+            fprintf(stream, "%s\n", arr[i].ptr);
         }
     }
 }
@@ -69,3 +66,6 @@ void printf_un_end(char *ptr, const char end) {
     printf("\"\n");
 }
 
+void fprint_border(FILE* stream) {
+    fprintf(stream, RED "##############################################################################\n" WHT);
+}

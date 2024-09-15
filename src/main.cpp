@@ -19,7 +19,6 @@ int main() {
     err_code last_err = ERR_OK;
     text_data* data = NULL;
     input_text_data("./test.txt", &data, &last_err);
-    DEBUG_ERROR(last_err)
     if (last_err != ERR_OK) {
         DEBUG_ERROR(last_err)
         return EXIT_FAILURE;
@@ -31,12 +30,14 @@ int main() {
     bubble_sort(sorted_arr, data->n_lines, str_cmp);
     bubble_sort(sorted_arr_rev, data->n_lines, str_cmp_rev);
 
-    print_text_arr(data->arr_orig, data->n_lines, false, false);
-    print_border()
-    print_text_arr(sorted_arr, data->n_lines, true, true);
-    print_border()
-    print_text_arr(sorted_arr_rev, data->n_lines, true, true);
+    fprint_text_arr(stdout, data->arr_orig, data->n_lines, false, false);
+    fprint_border(stdout);
+    fprint_text_arr(stdout, sorted_arr, data->n_lines, true, true);
+    fprint_border(stdout);
+    fprint_text_arr(stdout, sorted_arr_rev, data->n_lines, true, true);
 
     text_data_destructor(data);
+    line_data_destructor(sorted_arr);
+    line_data_destructor(sorted_arr_rev);
     return EXIT_SUCCESS;
 }
