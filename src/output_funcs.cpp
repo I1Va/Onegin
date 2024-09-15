@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cctype>
 #include <cstddef>
 #include <stdio.h>
 #include <system_error>
@@ -6,7 +7,10 @@
 #include "general.h"
 #include "storage_funcs.h"
 #include "output_funcs.h"
+#include "processing_funcs.h"
 #include "error_processing.h"
+
+const size_t LINE_MAX_SIZE = 10;
 
 void fprint_ascii_chars(FILE *stream, char *string, const size_t n) {
     assert(string != NULL);
@@ -26,14 +30,35 @@ void fprint_ascii_chars(FILE *stream, char *string, const size_t n) {
     fprintf(stream, "\n");
 }
 
-int print_text_arr(line_data *arr, const size_t n) {
+void print_text_arr(line_data *arr, const size_t n, bool only_syms, bool del_borders) {
     assert(arr != NULL);
 
     for (size_t i = 0; i < n; i++) {
-        // debug("idx: %ld: ", i);
-        printf("%s\n", arr[i].ptr);
+        if (only_syms) {
+            if (!letters_in_string(arr[i].ptr, '\0')) {
+                continue;
+            }
+        }
+        if (del_borders) {
+            size_t start_j = 0;
+            while (!isalpha(arr[i].ptr[start_j])) {
+                start_j++;
+            }
+            size_t end_j = arr[i].len - 1;
+            while (!isalpha(arr[i].ptr[end_j])) {
+                end_j--;
+            }
+            // for (size_t j = 0; j < max_line_sz - (end_j - start_j + 1); j++) {
+            //     printf(" ");
+            // }
+            for (size_t j = start_j; j <= end_j; j++) {
+                printf("%c", arr[i].ptr[j]);
+            }
+            printf("\n");
+        } else {
+            printf("%s\n", arr[i].ptr);
+        }
     }
-    return RETURN_TRUE;
 }
 
 void printf_un_end(char *ptr, const char end) {

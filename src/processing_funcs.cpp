@@ -165,8 +165,8 @@ const char *ni_strtok(const char *const str, const char *const delims) { // FIXM
     return return_token_start;
 }
 
-int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step) {
-    assert(a != NULL);
+int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step) {
+    assert(a!= NULL);
     assert(b != NULL);
     assert(end_a != NULL);
     assert(end_b != NULL);
@@ -189,22 +189,22 @@ int str_cmp__(const char *a, const char *b, const char *const end_a, const char 
     return tolower(*a) - tolower(*b);
 }
 
-int str_cmp(const char *a, const char *b) {
-    assert(a != NULL);
-    assert(b != NULL);
+int str_cmp(const line_data a, const line_data b) {
+    assert(a.ptr != NULL);
+    assert(b.ptr != NULL);
 
-    const char *end_a = strchr(a, '\0');
-    const char *end_b = strchr(b, '\0');
-    return str_cmp__(a, b, end_a, end_b, 1);
+    char *end_a = strchr(a.ptr, '\0');
+    char *end_b = strchr(b.ptr, '\0');
+    return str_cmp__(a.ptr, b.ptr, end_a, end_b, 1);
 }
 
-int str_cmp_rev(const char *a, const char *b) {
-    assert(a != NULL);
-    assert(b != NULL);
+int str_cmp_rev(line_data a, line_data b) {
+    assert(a.ptr != NULL);
+    assert(b.ptr != NULL);
 
-    const char *end_a = strchr(a, '\0');
-    const char *end_b = strchr(b, '\0');
-    return str_cmp__(end_a, end_b, a, b, -1);
+    char * end_a = strchr(a.ptr, '\0');
+    char *end_b = strchr(b.ptr, '\0');
+    return str_cmp__(end_a, end_b, a.ptr, b.ptr, -1);
 }
 
 void string_to_lower(char *string) {
@@ -237,35 +237,35 @@ char *remove_extra_spaces(char *string) { // FIXME: возможна некор�
     return string;
 }
 
-int str_swap(char **a, char **b) {
+void str_swap(line_data *a, line_data *b) {
     assert(a != NULL);
     assert(b != NULL);
 
-    char *c = *a;
+    line_data c = *a;
     *a = *b;
     *b = c;
-    return RETURN_TRUE;
+
 }
 
-char ** bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
+line_data *bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
     assert(data != NULL);
 
-    // char **sorted_arr = data->arr_orig;
-    // for (size_t i = 0; i < data->n_lines; i++) {
-    //     for (size_t j = 0; j < data->n_lines - 1; j++) {
-    //         // printf("%ld %ld\n", i, j);
-    //         if (reverse) {
-    //             if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-    //                 str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-    //             }
-    //         } else {
-    //             if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-    //                 str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-    //             }
-    //         }
+    line_data *sorted_arr = data->arr_orig;
+    for (size_t i = 0; i < data->n_lines; i++) {
+        for (size_t j = 0; j < data->n_lines - 1; j++) {
+            // printf("%ld %ld\n", i, j);
+            if (reverse) {
+                if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+                }
+            } else {
+                if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+                }
+            }
 
-    //     }
-    // }
-    // return sorted_arr;
+        }
+    }
+    return sorted_arr;
     return NULL;
 }

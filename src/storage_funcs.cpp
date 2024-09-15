@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/param.h>
 
 #include "storage_funcs.h"
 #include "error_processing.h"
@@ -17,8 +18,8 @@
 void text_data_destructor(text_data *text) {
     FREE(text->data);
     FREE(text->arr_orig);
-    FREE(text->arr_sorted);
-    FREE(text->arr_sorted_rev);
+    // FREE(text->arr_sorted);
+    // FREE(text->arr_sorted_rev);
     FREE(text);
 }
 
@@ -33,8 +34,10 @@ size_t get_file_sz(const char *const path, err_code *return_err) {
     return (size_t) buf.st_size;
 }
 
-line_data *place_pointers(char *const data_start, const size_t n_lines, const size_t file_sz, err_code *return_err) {
+line_data *place_pointers(char *const data_start, const size_t n_lines, const size_t file_sz, size_t *max_line_sz, err_code *return_err) {
     assert(data_start != NULL);
+
+    *max_line_sz = 0;
 
     line_data *arr_orig = (line_data *) calloc(n_lines, sizeof(line_data));
     if (arr_orig == NULL) {
@@ -50,7 +53,7 @@ line_data *place_pointers(char *const data_start, const size_t n_lines, const si
 
         char *next_ptr = strchr(data_curptr, '\n');
         (arr_orig + line_idx)->len = (size_t) (next_ptr - data_curptr);
-
+        *max_line_sz = MAX(*max_line_sz, (arr_orig + line_idx)->len);
         data_curptr = next_ptr;
 
         *data_curptr++ = '\0';
@@ -97,7 +100,7 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
     line_data *arr_sorted_rev = NULL;
     size_t file_sz = 0;
     size_t n_lines = 0;
-
+    size_t max_line_sz = 0;
 
     if (path == NULL) {
         *return_err = ERR_NULLPTR;
@@ -133,7 +136,7 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
 
     n_lines = str_cnt_chr(data_start, '\n', file_sz);
 
-    arr_orig = place_pointers(data_start, n_lines, file_sz, &last_err);
+    arr_orig = place_pointers(data_start, n_lines, file_sz, &max_line_sz, &last_err);
     if (last_err != ERR_OK) {
         *return_err = last_err;
         DEBUG_ERROR(last_err)
@@ -146,7 +149,6 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
         DEBUG_ERROR(ERR_CALLOC)
         goto END_POINT_5;
     }
-    copy_ptr_arr(arr_sorted, arr_orig, n_lines);
 
     arr_sorted_rev = (line_data *) calloc(n_lines, sizeof(line_data));
     if (arr_sorted_rev == NULL) {
@@ -154,13 +156,13 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
         DEBUG_ERROR(ERR_CALLOC);
         goto END_POINT_6;
     }
-    copy_ptr_arr(arr_sorted_rev, arr_orig, n_lines);
 
     text_data_ptr->data = data_start;
     text_data_ptr->arr_orig = arr_orig;
     text_data_ptr->arr_sorted = arr_sorted;
     text_data_ptr->arr_sorted_rev = arr_sorted_rev;
     text_data_ptr->n_lines = n_lines;
+    text_data_ptr->max_line_sz = max_line_sz;
     *text = text_data_ptr;
 
     return file_sz;

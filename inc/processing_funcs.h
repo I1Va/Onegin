@@ -6,17 +6,17 @@
 
 
 
-int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step);
+int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step);
 
-int str_cmp(const char *a, const char *b);
+int str_cmp(const line_data a, const line_data b);
 
-int str_cmp_rev(const char *a, const char *b);
+int str_cmp_rev(line_data a, line_data b);
 
 int str_cpy(char *a, char *b);
 
-int str_swap(char **a, char **b);
+void str_swap(line_data *a, line_data *b);
 
-char ** bubble_sort(const text_data* data, bool reverse);
+line_data *bubble_sort(const text_data* data, bool reverse);
 
 size_t ni_str_len(const char *a);
 
