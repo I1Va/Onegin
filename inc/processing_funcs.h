@@ -5,18 +5,17 @@
 #include <stdio.h>
 
 
-
-int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step);
-
-int str_cmp(const line_data a, const line_data b);
+int str_cmp(line_data a, const line_data b);
 
 int str_cmp_rev(line_data a, line_data b);
+
+int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step);
 
 int str_cpy(char *a, char *b);
 
 void str_swap(line_data *a, line_data *b);
 
-line_data *bubble_sort(const text_data* data, bool reverse);
+void bubble_sort(line_data* data, size_t n_lines, int (*comp)(line_data a, line_data b));
 
 size_t ni_str_len(const char *a);
 

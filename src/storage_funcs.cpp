@@ -15,11 +15,23 @@
 #include "processing_funcs.h"
 #include "storage_funcs.h"
 
+line_data *line_data_create(const size_t n_lines, const line_data* src) {
+    line_data *data = (line_data *) calloc(n_lines, sizeof(line_data));
+    if (src != NULL) {
+        for (size_t i = 0; i < n_lines; i++) {
+            data[i] = src[i];
+        }
+    }
+    return data; // WARNING: скопирует только первые n_lines из src
+}
+
+void line_data_delete(line_data *ptr) {
+    FREE(ptr);
+}
+
 void text_data_destructor(text_data *text) {
     FREE(text->data);
     FREE(text->arr_orig);
-    // FREE(text->arr_sorted);
-    // FREE(text->arr_sorted_rev);
     FREE(text);
 }
 
@@ -96,8 +108,6 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
     text_data *text_data_ptr = NULL;
     char *data_start = NULL;
     line_data *arr_orig = NULL;
-    line_data *arr_sorted = NULL;
-    line_data *arr_sorted_rev = NULL;
     size_t file_sz = 0;
     size_t n_lines = 0;
     size_t max_line_sz = 0;
@@ -143,24 +153,9 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
         goto END_POINT_4;
     }
 
-    arr_sorted = (line_data *) calloc(n_lines, sizeof(line_data));
-    if (arr_sorted == NULL) {
-        *return_err = ERR_CALLOC;
-        DEBUG_ERROR(ERR_CALLOC)
-        goto END_POINT_5;
-    }
-
-    arr_sorted_rev = (line_data *) calloc(n_lines, sizeof(line_data));
-    if (arr_sorted_rev == NULL) {
-        *return_err = ERR_CALLOC;
-        DEBUG_ERROR(ERR_CALLOC);
-        goto END_POINT_6;
-    }
 
     text_data_ptr->data = data_start;
     text_data_ptr->arr_orig = arr_orig;
-    text_data_ptr->arr_sorted = arr_sorted;
-    text_data_ptr->arr_sorted_rev = arr_sorted_rev;
     text_data_ptr->n_lines = n_lines;
     text_data_ptr->max_line_sz = max_line_sz;
     *text = text_data_ptr;
@@ -168,10 +163,6 @@ size_t input_text_data(const char *const path, text_data **text, err_code *retur
     return file_sz;
 
     // ZONE OF PTR FREE
-
-    END_POINT_6:
-    FREE(arr_sorted);
-    END_POINT_5:
     END_POINT_4:
     END_POINT_3:
     FREE(data_start);

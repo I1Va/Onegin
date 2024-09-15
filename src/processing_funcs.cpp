@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <sys/param.h>
 
 #include "general.h"
 #include "storage_funcs.h"
@@ -165,11 +166,10 @@ const char *ni_strtok(const char *const str, const char *const delims) { // FIXM
     return return_token_start;
 }
 
-int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step) {
-    assert(a!= NULL);
+
+int str_cmp__(char *a, char *b, char *end_a, char *end_b, int step) {
+    assert(a != NULL);
     assert(b != NULL);
-    assert(end_a != NULL);
-    assert(end_b != NULL);
 
     while (a != end_a && b != end_b) {
         if (!isalpha(*a)) {
@@ -181,15 +181,15 @@ int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step) {
             continue;
         }
         if (tolower(*a) != tolower(*b)) {
-            break;
+            return tolower(*a) - tolower(*b);
         }
         a += step;
         b += step;
     }
-    return tolower(*a) - tolower(*b);
+    return int((end_a - a) * step - (end_b - b) * step);
 }
 
-int str_cmp(const line_data a, const line_data b) {
+int str_cmp(line_data a, const line_data b) {
     assert(a.ptr != NULL);
     assert(b.ptr != NULL);
 
@@ -202,18 +202,9 @@ int str_cmp_rev(line_data a, line_data b) {
     assert(a.ptr != NULL);
     assert(b.ptr != NULL);
 
-    char * end_a = strchr(a.ptr, '\0');
+    char *end_a = strchr(a.ptr, '\0');
     char *end_b = strchr(b.ptr, '\0');
     return str_cmp__(end_a, end_b, a.ptr, b.ptr, -1);
-}
-
-void string_to_lower(char *string) {
-    assert(string != NULL);
-
-    while (*string) {
-        *string = (char) tolower((int) *string);
-        string++;
-    }
 }
 
 bool letters_in_string(char *string, const char end_char) {
@@ -228,15 +219,6 @@ bool letters_in_string(char *string, const char end_char) {
     return false;
 }
 
-char *remove_extra_spaces(char *string) { // FIXME: возможна некоректная работа с русскими символам
-    assert(string != NULL);
-
-    while (*string && *string == ' ') {
-        *string++ = '\0';
-    }
-    return string;
-}
-
 void str_swap(line_data *a, line_data *b) {
     assert(a != NULL);
     assert(b != NULL);
@@ -244,28 +226,22 @@ void str_swap(line_data *a, line_data *b) {
     line_data c = *a;
     *a = *b;
     *b = c;
-
 }
 
-line_data *bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
+void line_data_cpy(line_data *dest, line_data *src) {
+    dest->len = src->len;
+    dest->ptr = src->ptr;
+}
+
+void bubble_sort(line_data* data, size_t n_lines, int (*comp)(line_data a, line_data b)) { // TODO: сделать функцию с шаблонами
     assert(data != NULL);
 
-    line_data *sorted_arr = data->arr_orig;
-    for (size_t i = 0; i < data->n_lines; i++) {
-        for (size_t j = 0; j < data->n_lines - 1; j++) {
-            // printf("%ld %ld\n", i, j);
-            if (reverse) {
-                if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-                }
-            } else {
-                if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-                }
+    for (size_t i = 0; i < n_lines; i++) {
+        for (size_t j = 0; j < n_lines - 1; j++) {
+            int res = comp(data[j], data[j + 1]);
+            if (res > 0) {
+                str_swap(&data[j], &data[j + 1]);
             }
-
         }
     }
-    return sorted_arr;
-    return NULL;
 }

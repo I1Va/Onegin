@@ -16,6 +16,7 @@
 #define fprintf_grn(stream, str_, ...) fprintf(stream, GRN str_ WHT, ##__VA_ARGS__)
 #define fprintf_yel(stream, str_, ...) fprintf(stream, YEL str_ WHT, ##__VA_ARGS__)
 
+#define print_border() printf("################################################################################\n");
 
 #define FREE(ptr)              \
     do {                       \

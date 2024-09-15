@@ -25,9 +25,17 @@ int main() {
         return EXIT_FAILURE;
     } // TODO: передачу названия файла через командную строку
 
-    data->arr_sorted = bubble_sort(data, false);
+    line_data *sorted_arr = line_data_create(data->n_lines, data->arr_orig);
+    line_data *sorted_arr_rev = line_data_create(data->n_lines, data->arr_orig);
 
-    print_text_arr(data->arr_orig, data->n_lines, true, true);
+    bubble_sort(sorted_arr, data->n_lines, str_cmp);
+    bubble_sort(sorted_arr_rev, data->n_lines, str_cmp_rev);
+
+    print_text_arr(data->arr_orig, data->n_lines, false, false);
+    print_border()
+    print_text_arr(sorted_arr, data->n_lines, true, true);
+    print_border()
+    print_text_arr(sorted_arr_rev, data->n_lines, true, true);
 
     text_data_destructor(data);
     return EXIT_SUCCESS;
