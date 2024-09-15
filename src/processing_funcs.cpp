@@ -250,21 +250,22 @@ int str_swap(char **a, char **b) {
 char ** bubble_sort(const text_data* data, bool reverse) { // TODO: сделать функцию с шаблонами
     assert(data != NULL);
 
-    char **sorted_arr = data->arr_orig;
-    for (size_t i = 0; i < data->n_lines; i++) {
-        for (size_t j = 0; j < data->n_lines - 1; j++) {
-            // printf("%ld %ld\n", i, j);
-            if (reverse) {
-                if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-                }
-            } else {
-                if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
-                    str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
-                }
-            }
+    // char **sorted_arr = data->arr_orig;
+    // for (size_t i = 0; i < data->n_lines; i++) {
+    //     for (size_t j = 0; j < data->n_lines - 1; j++) {
+    //         // printf("%ld %ld\n", i, j);
+    //         if (reverse) {
+    //             if (str_cmp_rev(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+    //                 str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+    //             }
+    //         } else {
+    //             if (str_cmp(sorted_arr[j], sorted_arr[j + 1]) > 0) {
+    //                 str_swap(&sorted_arr[j], &sorted_arr[j + 1]);
+    //             }
+    //         }
 
-        }
-    }
-    return sorted_arr;
+    //     }
+    // }
+    // return sorted_arr;
+    return NULL;
 }

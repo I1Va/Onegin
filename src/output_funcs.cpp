@@ -26,12 +26,12 @@ void fprint_ascii_chars(FILE *stream, char *string, const size_t n) {
     fprintf(stream, "\n");
 }
 
-int print_text_arr(char ** arr, const size_t n) {
+int print_text_arr(line_data *arr, const size_t n) {
     assert(arr != NULL);
 
     for (size_t i = 0; i < n; i++) {
         // debug("idx: %ld: ", i);
-        printf("%s\n", arr[i]);
+        printf("%s\n", arr[i].ptr);
     }
     return RETURN_TRUE;
 }
