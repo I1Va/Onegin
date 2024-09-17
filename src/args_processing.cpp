@@ -46,7 +46,7 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
         goto END_POINT_2;
     }
 
-    bubble_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
+    quick_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
     qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
 
     if (output_file_path == NULL) {

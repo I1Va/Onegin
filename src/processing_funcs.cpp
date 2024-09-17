@@ -171,7 +171,7 @@ int str_cmp__(const char *a, const char *b, const char *const end_a, const char 
     assert(b != NULL);
 
     while (a != end_a && b != end_b) {
-        debug("a/b : [%c]/[%c]\n", *a, *b);
+        // debug("a/b : [%c]/[%c]\n", *a, *b);
         if (!isalpha(*a)) {
             a += step;
             continue;
@@ -267,42 +267,33 @@ void bubble_sort(void *const base, const size_t size, const size_t nmemb, int (*
     }
 }
 
-char *quick_sort_partion(void *const start_arr, void *const end_arr, const size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
-    assert(start_arr != NULL);
-    assert(end_arr != NULL);
 
-    char *left_ptr_low = (char *) start_arr;
-    char *right_ptr_high = (char *) end_arr;
+void *partition(void *low, size_t n, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
+    assert(n != 0);
 
-    // void *pivot = end_arr;
-    char *left_ptr_high = left_ptr_low - (1 * nmemb);
+    char *high = (char *) low + (n - 1) * nmemb;
+    char *pivot = (char *) high;
 
-    for (char *right_ptr_low = left_ptr_low; right_ptr_low < end_arr; right_ptr_low += (1 * nmemb)) {
-        if (compare_func((line_data *) start_arr, (line_data *) end_arr)) {
-            left_ptr_high += (1 * nmemb);
-            swap_brut(left_ptr_high, right_ptr_low, nmemb);
+    char *i = (char *) low - 1 * nmemb;
+
+    for (char *j = (char *) low; j <= high - nmemb; j += 1 * nmemb) {
+        if (compare_func((char *) j, (char *) pivot) < 0) {
+            i += 1 * nmemb;
+            swap_brut(i, j, nmemb);
         }
     }
 
-    swap_brut(left_ptr_high + (1 * nmemb), right_ptr_high, nmemb);
-    return left_ptr_high + (1 * nmemb);
+    swap_brut(i + 1 * nmemb, high, nmemb);
+    return i + 1 * nmemb;
 }
 
-void quick_sort__(void *const start_arr, void *const end_arr, const size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
-    assert(start_arr != NULL);
-    assert(end_arr != NULL);
+void quick_sort(void *low, size_t n, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
+    char *high = (char *) low + (n - 1) * nmemb;
 
-    if (start_arr < end_arr) {
-        char* pivot = quick_sort_partion(start_arr, end_arr, nmemb, compare_func);
+    if (low < high) {
+        char *pi = (char *) partition(low, n, nmemb, compare_func);
 
-        line_data *idx = (line_data *) start_arr;
-        quick_sort__(start_arr, pivot - (1 * nmemb), nmemb, compare_func);
-        quick_sort__(pivot + (1 * nmemb), end_arr, nmemb, compare_func);
+        quick_sort(low, (size_t) ((char *)pi - (char *)low) / nmemb, nmemb, compare_func);
+        quick_sort(pi + 1 * nmemb, (size_t) ((char *) high - (char *) pi) / nmemb, nmemb, compare_func);
     }
 }
-
-// void quick_sort(void *const base, const size_t size, const size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
-
-//     quick_sort__(base, base + size * nmemb, nmemb, compare_func);
-// }
-
