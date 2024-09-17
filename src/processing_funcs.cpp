@@ -166,7 +166,6 @@ const char *ni_strtok(const char *const str, const char *const delims) { // FIXM
     return return_token_start;
 }
 
-
 int str_cmp__(char *a, char *b, char *end_a, char *end_b, int step) {
     assert(a != NULL);
     assert(b != NULL);
@@ -189,22 +188,22 @@ int str_cmp__(char *a, char *b, char *end_a, char *end_b, int step) {
     return int((end_a - a) * step - (end_b - b) * step);
 }
 
-int str_cmp(line_data a, const line_data b) {
-    assert(a.ptr != NULL);
-    assert(b.ptr != NULL);
+int str_cmp(line_data* a, line_data* b) {
+    assert(a != NULL);
+    assert(b != NULL);
 
-    char *end_a = strchr(a.ptr, '\0');
-    char *end_b = strchr(b.ptr, '\0');
-    return str_cmp__(a.ptr, b.ptr, end_a, end_b, 1);
+    char *end_a = strchr(a->ptr, '\0');
+    char *end_b = strchr(b->ptr, '\0');
+    return str_cmp__(a->ptr, b->ptr, end_a, end_b, 1);
 }
 
-int str_cmp_rev(line_data a, line_data b) {
-    assert(a.ptr != NULL);
-    assert(b.ptr != NULL);
+int str_cmp_rev(line_data *a, line_data *b) {
+    assert(a != NULL);
+    assert(b != NULL);
 
-    char *end_a = strchr(a.ptr, '\0');
-    char *end_b = strchr(b.ptr, '\0');
-    return str_cmp__(end_a, end_b, a.ptr, b.ptr, -1);
+    char *end_a = strchr(a->ptr, '\0');
+    char *end_b = strchr(b->ptr, '\0');
+    return str_cmp__(end_a, end_b, a->ptr, b->ptr, -1);
 }
 
 bool letters_in_string(char *string, const char end_char) {
@@ -219,23 +218,20 @@ bool letters_in_string(char *string, const char end_char) {
     return false;
 }
 
-void str_swap(line_data *a, line_data *b) {
-    assert(a != NULL);
-    assert(b != NULL);
-
-    line_data c = *a;
-    *a = *b;
-    *b = c;
+void swap_brut(void *a, void *b, const size_t nmemb) {
+    for (size_t i = 0; i < nmemb; i++) {
+        char c = *((char *) a + i);
+        *((char *) a + i) = *((char *) b + i);
+        *((char *) b + i) = c;
+    }
 }
 
-void bubble_sort(line_data* data, size_t n_lines, int (*comp)(line_data a, line_data b)) { // TODO: сделать функцию с шаблонами
-    assert(data != NULL);
-
-    for (size_t i = 0; i < n_lines; i++) {
-        for (size_t j = 0; j < n_lines - 1; j++) {
-            int res = comp(data[j], data[j + 1]);
+void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(void *a, void *b)) {
+    for (size_t i = 0; i < size; i++) {
+        for (size_t j = 0; j < size - 1; j++) {
+            int res = compare_func((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb);
             if (res > 0) {
-                str_swap(&data[j], &data[j + 1]);
+                swap_brut((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb, nmemb);
             }
         }
     }
