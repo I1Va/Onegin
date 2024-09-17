@@ -226,7 +226,34 @@ void swap_brut(void *a, void *b, const size_t nmemb) {
     }
 }
 
-void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(void *a, void *b)) {
+void swap_opt(void *a, void *b, const size_t nmemb) { // FIXME: есть баг, есть копипаст. треубется правка
+    for (size_t i = 0; i < nmemb;) {
+        printf("nmem[%ld], i: %ld\n", nmemb, i);
+        if (i + 8 < nmemb) {
+            long long c = *((long long *) a + i);
+            *((long long *) a + i) = *((long long *) b + i);
+            *((long long *) b + i) = c;
+            i += 8;
+            continue;
+        }
+        if (i + 4 < nmemb) {
+            int c = *((int *) a + i);
+            *((int *) a + i) = *((int *) b + i);
+            *((int *) b + i) = c;
+            i += 4;
+            continue;
+        }
+        if (i + 1 < nmemb) {
+            char c = *((char *) a + i);
+            *((char *) a + i) = *((char *) b + i);
+            *((char *) b + i) = c;
+            i += 1;
+            continue;
+        }
+    }
+}
+
+void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
     for (size_t i = 0; i < size; i++) {
         for (size_t j = 0; j < size - 1; j++) {
             int res = compare_func((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb);

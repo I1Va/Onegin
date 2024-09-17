@@ -4,6 +4,7 @@
 #include "storage_funcs.h"
 #include <stdio.h>
 
+typedef int (*cmp)(const void *a, const void *b);
 
 int str_cmp(line_data *a, line_data *b);
 
@@ -15,7 +16,9 @@ int str_cpy(char *a, char *b);
 
 void swap_brut(void *a, void *b, const size_t nmemb);
 
-void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(void *a, void *b));
+void swap_opt(void *a, void *b, const size_t nmemb);
+
+void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(const void *a, const void *b));
 
 size_t ni_str_len(const char *a);
 

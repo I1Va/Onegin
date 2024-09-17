@@ -16,8 +16,6 @@
 
 
 int main() {
-    typedef int (*cmp)(void *a, void *b);
-
     err_code last_err = ERR_OK;
     text_data* data = NULL;
 
@@ -31,7 +29,7 @@ int main() {
     line_data *sorted_arr_rev = line_data_create(data->n_lines, data->arr_orig);
 
     bubble_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
-    bubble_sort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
+    qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
 
 
     fprint_text_arr(stdout, sorted_arr, data->n_lines, true, true);
