@@ -224,30 +224,32 @@ void swap_brut(void *a, void *b, const size_t nmemb) {
     }
 }
 
-void swap_opt(void *a, void *b, const size_t nmemb) { // FIXME: есть баг, есть копипаст. треубется правка
-    for (size_t i = 0; i < nmemb;) {
-        // debug("nmem[%ld], i: %ld\n", nmemb, i);
-        if (i + 8 < nmemb) {
-            long long c = *((long long *) a + i);
-            *((long long *) a + i) = *((long long *) b + i);
-            *((long long *) b + i) = c;
-            i += 8;
-            continue;
-        }
-        if (i + 4 < nmemb) {
-            int c = *((int *) a + i);
-            *((int *) a + i) = *((int *) b + i);
-            *((int *) b + i) = c;
-            i += 4;
-            continue;
-        }
-        if (i + 1 < nmemb) {
-            char c = *((char *) a + i);
-            *((char *) a + i) = *((char *) b + i);
-            *((char *) b + i) = c;
-            i += 1;
-            continue;
-        }
+void swap_opt(void *a, void *b, size_t nmemb) {
+    char *a_char = (char *) a;
+    char *b_char = (char *) b;
+    while (nmemb >= 8) {
+        long long c = *(long long *) a_char;
+        *((long long *) a_char) = *(long long *) b_char;
+        *((long long *) b_char) = c;
+        a_char += 8;
+        b_char += 8;
+        nmemb -= 8;
+    }
+    while (nmemb >= 4) {
+        int c = *(int *) a_char;
+        *((int *) a_char) = *((int *) b_char);
+        *((int *) b_char) = c;
+        a_char += 4;
+        b_char += 4;
+        nmemb -= 4;
+    }
+    while (nmemb >= 1) {
+        char c = *a_char;
+        *a_char = *b_char;
+        *b_char = c;
+        a_char += 1;
+        b_char += 1;
+        nmemb -= 1;
     }
 }
 
@@ -258,7 +260,7 @@ void bubble_sort(void *const base, const size_t size, const size_t nmemb, int (*
         for (size_t j = 0; j < size - 1; j++) {
             int res = compare_func((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb);
             if (res > 0) {
-                swap_brut((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb, nmemb);
+                swap_opt((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb, nmemb);
             }
         }
     }
@@ -276,11 +278,11 @@ void *partition(void *low, size_t n, size_t nmemb, int (*compare_func)(const voi
     for (char *j = (char *) low; j <= high - nmemb; j += 1 * nmemb) {
         if (compare_func((char *) j, (char *) pivot) < 0) {
             i += 1 * nmemb;
-            swap_brut(i, j, nmemb);
+            swap_opt(i, j, nmemb);
         }
     }
 
-    swap_brut(i + 1 * nmemb, high, nmemb);
+    swap_opt(i + 1 * nmemb, high, nmemb);
     return i + 1 * nmemb;
 }
 
