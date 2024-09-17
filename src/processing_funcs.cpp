@@ -9,12 +9,9 @@
 #include <ctype.h>
 #include <sys/param.h>
 
-#include "general.h"
 #include "storage_funcs.h"
-#include "output_funcs.h"
 
 #include "processing_funcs.h"
-#include "error_processing.h"
 
 size_t ni_str_len(const char *a) {
     assert(a != NULL);
