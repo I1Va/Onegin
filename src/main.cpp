@@ -15,8 +15,6 @@
 #include "error_processing.h"
 #include "args_processing.h"
 
-
-
 int main(const int argc, const char *argv[]) {
     err_code last_error = ERR_OK;
 

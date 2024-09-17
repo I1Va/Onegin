@@ -15,7 +15,7 @@
 #include "error_processing.h"
 #include "args_processing.h"
 
-void main_func(const char input_file_path[], const char output_file_path[], err_code *return_err) {
+void main_mode_launch(const char input_file_path[], const char output_file_path[], err_code *const return_err) {
     err_code last_err = ERR_OK;
 
     text_data* data = NULL;
@@ -49,12 +49,17 @@ void main_func(const char input_file_path[], const char output_file_path[], err_
     bubble_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
     qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
 
-    output_file_ptr = fopen(output_file_path, "wb");
-    if (output_file_ptr == NULL) {
-        printf("didn't find output file [%s]\n", output_file_path);
-        DEBUG_ERROR(ERR_FILE_OPEN);
-        goto END_POINT_3;
+    if (output_file_path == NULL) {
+        output_file_ptr = stdout;
+    } else {
+        output_file_ptr = fopen(output_file_path, "wb");
+        if (output_file_ptr == NULL) {
+            printf("didn't find output file [%s]\n", output_file_path);
+            DEBUG_ERROR(ERR_FILE_OPEN);
+            goto END_POINT_3;
+        }
     }
+
 
     fprint_text_arr(output_file_ptr, sorted_arr, data->n_lines, true, true);
     fprint_border(output_file_ptr);
@@ -79,9 +84,11 @@ void main_func(const char input_file_path[], const char output_file_path[], err_
     END_POINT_1:
     text_data_destructor(data);
     END_POINT_0:
+
+    return;
 }
 
-void mode_launcher(const int argc, const char *argv[], err_code *return_err) {
+void mode_launcher(const int argc, const char *argv[], err_code *const return_err) {
     err_code last_error = ERR_OK;
 
     if (argc < 2) {
@@ -90,18 +97,17 @@ void mode_launcher(const int argc, const char *argv[], err_code *return_err) {
         DEBUG_ERROR(ERR_ARGS);
         return;
     }
+
     if (argc < 3) {
-        *return_err = ERR_ARGS;
-        printf("output file was't entered\n");
-        DEBUG_ERROR(ERR_ARGS);
+        main_mode_launch(argv[1], NULL, &last_error);
         return;
     }
 
-    main_func(argv[1], argv[2], &last_error);
+    main_mode_launch(argv[1], argv[2], &last_error);
 
     if (last_error != ERR_OK) {
         *return_err = last_error;
-        DEBUG_ERROR(last_err);
+        DEBUG_ERROR(last_error);
         return;
     }
 }

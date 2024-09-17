@@ -15,7 +15,7 @@
 #include "processing_funcs.h"
 #include "storage_funcs.h"
 
-line_data *line_data_create(const size_t n_lines, const line_data* src) {
+line_data *line_data_create(const size_t n_lines, const line_data *const src) {
     line_data *data = (line_data *) calloc(n_lines, sizeof(line_data));
     if (data == NULL) {
         DEBUG_ERROR(ERR_CALLOC);
@@ -40,7 +40,7 @@ void text_data_destructor(text_data *text) {
     FREE(text);
 }
 
-size_t get_file_sz(const char *const path, err_code *return_err) {
+size_t get_file_sz(const char *const path, err_code *const return_err) {
     struct stat buf = {};
     if (stat(path, &buf) != 0) {
         *return_err = ERR_STAT;
@@ -51,7 +51,7 @@ size_t get_file_sz(const char *const path, err_code *return_err) {
     return (size_t) buf.st_size;
 }
 
-line_data *place_pointers(char *const data_start, const size_t n_lines, const size_t file_sz, size_t *max_line_sz, err_code *return_err) {
+line_data *place_pointers(char *const data_start, const size_t n_lines, const size_t file_sz, size_t *const max_line_sz, err_code *const return_err) {
     assert(data_start != NULL);
 
     *max_line_sz = 0;
@@ -80,7 +80,7 @@ line_data *place_pointers(char *const data_start, const size_t n_lines, const si
     return arr_orig;
 }
 
-size_t input_data(const char *path, char **data_start, const size_t file_sz, err_code *return_err) {
+size_t input_data(const char *const path, char **data_start, const size_t file_sz, err_code *const return_err) {
     FILE *file = fopen(path, "rb");
     if (file == NULL) {
         DEBUG_ERROR(ERR_FILE_OPEN)
@@ -107,7 +107,7 @@ void copy_ptr_arr(line_data *dest, line_data *source, size_t n) {
     }
 }
 
-size_t input_text_data(const char *const path, text_data **text, err_code *return_err) {
+size_t input_text_data(const char *const path, text_data **text, err_code *const return_err) {
     err_code last_err = ERR_OK;
 
     text_data *text_data_ptr = NULL;

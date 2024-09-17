@@ -46,4 +46,10 @@ bool letters_in_string(char *string, const char end_char);
 
 char *remove_extra_spaces(char *string);
 
+char *quick_sort_partion(void *const start_arr, void *const end_arr, const size_t nmemb, int (*compare_func)(const void *a, const void *b));
+
+void quick_sort__(void *const start_arr, void *const end_arr, const size_t nmemb, int (*compare_func)(const void *a, const void *b));
+
+void quick_sort(void *const base, const size_t size, const size_t nmemb, int (*compare_func)(const void *a, const void *b));
+
 #endif // PROCESSING_FUNCS_H
