@@ -15,7 +15,8 @@ const char *get_descr(enum err_code err) {
         DESCR_(ERR_MEM)
         DESCR_(ERR_FILE_CLOSE)
         DESCR_(ERR_FILE_OPEN)
-        default: return "???";
+        DESCR_(ERR_ARGS)
+        default: return "VERY STRANGE ERROR:(";
     }
 }
 

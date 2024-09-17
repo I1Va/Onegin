@@ -6,11 +6,11 @@
 
 typedef int (*cmp)(const void *a, const void *b);
 
-int str_cmp(line_data *a, line_data *b);
+int str_cmp(const line_data *const a, const line_data*const b);
 
 int str_cmp_rev(line_data *a, line_data *b);
 
-int str_cmp__(char *a, char *b, char *end_a, char *end_b, const int step);
+int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step);
 
 int str_cpy(char *a, char *b);
 

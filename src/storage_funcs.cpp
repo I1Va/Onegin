@@ -17,6 +17,11 @@
 
 line_data *line_data_create(const size_t n_lines, const line_data* src) {
     line_data *data = (line_data *) calloc(n_lines, sizeof(line_data));
+    if (data == NULL) {
+        DEBUG_ERROR(ERR_CALLOC);
+        return NULL;
+    }
+
     if (src != NULL) {
         for (size_t i = 0; i < n_lines; i++) {
             data[i] = src[i];

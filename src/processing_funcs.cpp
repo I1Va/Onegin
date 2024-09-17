@@ -166,7 +166,7 @@ const char *ni_strtok(const char *const str, const char *const delims) { // FIXM
     return return_token_start;
 }
 
-int str_cmp__(char *a, char *b, char *end_a, char *end_b, int step) {
+int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step) {
     assert(a != NULL);
     assert(b != NULL);
 
@@ -188,12 +188,12 @@ int str_cmp__(char *a, char *b, char *end_a, char *end_b, int step) {
     return int((end_a - a) * step - (end_b - b) * step);
 }
 
-int str_cmp(line_data* a, line_data* b) {
+int str_cmp(const line_data *const a, const line_data*const b) {
     assert(a != NULL);
     assert(b != NULL);
 
-    char *end_a = strchr(a->ptr, '\0');
-    char *end_b = strchr(b->ptr, '\0');
+    const char *end_a = strchr(a->ptr, '\0');
+    const char *end_b = strchr(b->ptr, '\0');
     return str_cmp__(a->ptr, b->ptr, end_a, end_b, 1);
 }
 
@@ -228,7 +228,7 @@ void swap_brut(void *a, void *b, const size_t nmemb) {
 
 void swap_opt(void *a, void *b, const size_t nmemb) { // FIXME: есть баг, есть копипаст. треубется правка
     for (size_t i = 0; i < nmemb;) {
-        printf("nmem[%ld], i: %ld\n", nmemb, i);
+        // debug("nmem[%ld], i: %ld\n", nmemb, i);
         if (i + 8 < nmemb) {
             long long c = *((long long *) a + i);
             *((long long *) a + i) = *((long long *) b + i);
@@ -254,6 +254,8 @@ void swap_opt(void *a, void *b, const size_t nmemb) { // FIXME: есть баг,
 }
 
 void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
+    assert(base != NULL);
+
     for (size_t i = 0; i < size; i++) {
         for (size_t j = 0; j < size - 1; j++) {
             int res = compare_func((char *) base + j * nmemb, (char *) base + (j + 1) * nmemb);
@@ -263,3 +265,4 @@ void bubble_sort(void *base, size_t size, size_t nmemb, int (*compare_func)(cons
         }
     }
 }
+

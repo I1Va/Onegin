@@ -67,5 +67,5 @@ void printf_un_end(char *ptr, const char end) {
 }
 
 void fprint_border(FILE* stream) {
-    fprintf(stream, RED "##############################################################################\n" WHT);
+    fprintf(stream, RED "##############################################################################" WHT "\n");
 }

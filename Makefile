@@ -29,7 +29,7 @@ BUILD_DIR = build
 
 SRC_DIR = src
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-SRC_OUTPUTFILE = $(BUILD_DIR)/pointers.out
+SRC_OUTPUTFILE = $(BUILD_DIR)/onegin.out
 
 # LD_FLAGS =
 
