@@ -15,8 +15,8 @@
 #include "error_processing.h"
 #include "args_processing.h"
 
-void main_mode_launch(const char input_file_path[], const char output_file_path[], err_code *const return_err) {
-    err_code last_err = ERR_OK;
+void main_mode_launch(const char input_file_path[], const char output_file_path[], err_code *const ReturnErr) {
+    err_code LastErr = ERR_OK;
 
     text_data* data = NULL;
     line_data *sorted_arr = NULL;
@@ -24,24 +24,24 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
     FILE *output_file_ptr = NULL;
 
 
-    input_text_data(input_file_path, &data, &last_err);
-    if (last_err != ERR_OK) {
-        *return_err = last_err;
+    input_text_data(input_file_path, &data, &LastErr);
+    if (LastErr != ERR_OK) {
+        *ReturnErr = LastErr;
         printf("didn't find input file [%s]\n", input_file_path);
-        DEBUG_ERROR(last_err)
-        goto END_POINT_0;
+        DEBUG_ERROR(LastErr)
+        return;
     }
 
     sorted_arr = line_data_create(data->n_lines, data->arr_orig);
     if (sorted_arr == NULL) {
-        *return_err = ERR_CALLOC;
+        *ReturnErr = ERR_CALLOC;
         DEBUG_ERROR(ERR_CALLOC);
         goto END_POINT_1;
     }
 
     sorted_arr_rev = line_data_create(data->n_lines, data->arr_orig);
     if (sorted_arr_rev == NULL) {
-        *return_err = ERR_CALLOC;
+        *ReturnErr = ERR_CALLOC;
         DEBUG_ERROR(ERR_CALLOC);
         goto END_POINT_2;
     }
@@ -83,31 +83,29 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
     line_data_destructor(sorted_arr);
     END_POINT_1:
     text_data_destructor(data);
-    END_POINT_0:
-
     return;
 }
 
-void mode_launcher(const int argc, const char *argv[], err_code *const return_err) {
-    err_code last_error = ERR_OK;
+void mode_launcher(const int argc, const char *argv[], err_code *const ReturnErr) {
+    err_code LastErr = ERR_OK;
 
     if (argc < 2) {
-        *return_err = ERR_ARGS;
+        *ReturnErr = ERR_ARGS;
         printf("input file was't entered\n");
         DEBUG_ERROR(ERR_ARGS);
         return;
     }
 
     if (argc < 3) {
-        main_mode_launch(argv[1], NULL, &last_error);
+        main_mode_launch(argv[1], NULL, &LastErr);
         return;
     }
 
-    main_mode_launch(argv[1], argv[2], &last_error);
+    main_mode_launch(argv[1], argv[2], &LastErr);
 
-    if (last_error != ERR_OK) {
-        *return_err = last_error;
-        DEBUG_ERROR(last_error);
+    if (LastErr != ERR_OK) {
+        *ReturnErr = LastErr;
+        DEBUG_ERROR(LastErr);
         return;
     }
 }

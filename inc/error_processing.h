@@ -7,7 +7,7 @@
 
 enum err_code {
     ERR_OK = 0,
-    ERR_NULLPTR = 1,
+    ERR_NULLPTR = 1, // TODO: подравняй нумерацию
     ERR_CALLOC = 2,
     ERR_MEM = 3,
     ERR_UNKNOWN = 4,

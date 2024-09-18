@@ -45,4 +45,4 @@ debug:
 	./$(SRC_OUTPUTFILE) onegin_eng.txt
 
 launch: build
-	./$(SRC_OUTPUTFILE) onegin_eng.txt # отделить запуск от компиляции
+	./$(SRC_OUTPUTFILE) onegin_eng.txt out.txt # отделить запуск от компиляции
