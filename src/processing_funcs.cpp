@@ -13,6 +13,15 @@
 
 #include "processing_funcs.h"
 
+size_t str_cnt_chr(const char *string, const char c, size_t n) {
+    assert(string != NULL);
+    size_t c_cnt = 0;
+    while (n--) {
+        c_cnt += (*string++ == c);
+    }
+    return c_cnt;
+}
+
 int str_cmp__(const char *a, const char *b, const char *const end_a, const char *const end_b, const int step) {
     assert(a != NULL);
     assert(b != NULL);

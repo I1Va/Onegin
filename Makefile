@@ -42,7 +42,7 @@ build:
 
 debug:
 	$(CC) $(SRC_FILES) -o $(SRC_OUTPUTFILE) $(DEFINE_FLAGS) $(INCLUDE_FLAGS) $(CC_DEBUG_FLAGS)
-	./$(SRC_OUTPUTFILE) onegin_eng.txt
+	./$(SRC_OUTPUTFILE) onegin_eng.txt out.txt
 
 launch: build
 	./$(SRC_OUTPUTFILE) onegin_eng.txt out.txt # отделить запуск от компиляции

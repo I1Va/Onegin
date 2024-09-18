@@ -1,6 +1,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include <time.h>
+
 #define GRN "\e[0;32m"
 #define WHT "\e[0;20m"
 #define RED "\e[0;31m"
@@ -31,6 +33,12 @@
         ptr__                    \
     })
 */
+
+#define TIMER_START {clock_t start = clock(); const int first_line = __LINE__;
+
+#define TIMER_END(stream) double seconds = (double)(clock() - start) / CLOCKS_PER_SEC; fprintf(stream, RED "processing lines[%d : %d] = %lg\n" WHT, first_line, __LINE__, seconds);};
+
+
 
 enum RETURN_STATES {
     ReturnErrOR = -1,

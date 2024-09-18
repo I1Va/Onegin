@@ -15,21 +15,15 @@
 #include "error_processing.h"
 #include "args_processing.h"
 
+#include <time.h>
+
+
 int main(const int argc, const char *argv[]) {
     err_code LastErr = ERR_OK;
-    mode_launcher(argc, argv, &LastErr);
+    TIMER_START mode_launcher(argc, argv, &LastErr); TIMER_END(stderr)
 
     if (LastErr != ERR_OK) {
         DEBUG_ERROR(LastErr);
         return EXIT_FAILURE;
     }
-
-
-     // TODO: я нихрена не понимаю, что происходит в программе
-                                            //       Ты просто взвалил обязанности мейна на другую функцию
-                                            //       Поэтому смысла вообще нет в твоём err_code здесь
-
-    // TODO: Сделай так, чтобы мейн состоял из объявления структуры,
-    //       конструктора для её заполнения, функция, которая принимает структуру и сортирует строки
-    //       и деструктор
 }

@@ -46,8 +46,8 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
         goto END_POINT_2;
     }
 
-    quick_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
-    qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
+    TIMER_START quick_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp); TIMER_END(stdout)
+    TIMER_START qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev); TIMER_END(stdout)
 
     if (output_file_path == NULL) {
         output_file_ptr = stdout;
