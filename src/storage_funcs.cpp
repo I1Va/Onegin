@@ -37,6 +37,9 @@ void line_data_destructor(line_data *ptr) {
 void text_data_destructor(text_data *text) {
     FREE(text->data);
     FREE(text->arr_orig);
+
+    line_data_destructor(text->arr_sorted);
+    line_data_destructor(text->arr_sorted_rev);
     FREE(text);
 }
 

@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <sys/param.h>
 
+#include "general.h"
 #include "storage_funcs.h"
 
 #include "processing_funcs.h"
@@ -125,12 +126,39 @@ void bubble_sort(void *const base, const size_t size, const size_t nmemb, int (*
     }
 }
 
+void *pivot_brut(void *base, const size_t n, const size_t nmemb,
+    int (*compare_func)(const void *a, const void *b))
+{
+    if (nmemb){};
+    if (n){};
+    if (compare_func == NULL) {
+        return base;
+    }
+    // char *high = (char *) base + (n - 1) * nmemb;
+    // size_t idx = (size_t) rand() % n;
+    // char *arr = (char *) calloc((size_t) (high - low + 1), sizeof(char));
+    // // bubble_sort(arr, n, nmemb, compare_func);
+    // // char *pivot = (arr + n / 2);
+    // // while (*low != *pivot) {
+    // //     low++;
+    // // }
+    // FREE(arr);
+    return base;
+}
 
-void *partition(void *low, size_t n, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
+void *partition(void *low, size_t n, size_t nmemb,
+    int (*compare_func)(const void *a, const void *b),
+    void *(*pivot_func)(const void *base, const size_t n, const size_t nmemb,
+        int (*compare_func)(const void *a, const void *b)))
+    {
     assert(n != 0);
 
     char *high = (char *) low + (n - 1) * nmemb;
     char *pivot = (char *) high;
+    if (pivot_func != NULL) {
+        pivot = (char *) pivot_func(low, n, nmemb, compare_func);
+    }
+
 
     char *i = (char *) low - 1 * nmemb;
 
@@ -145,13 +173,17 @@ void *partition(void *low, size_t n, size_t nmemb, int (*compare_func)(const voi
     return i + 1 * nmemb;
 }
 
-void quick_sort(void *low, size_t n, size_t nmemb, int (*compare_func)(const void *a, const void *b)) {
+void quick_sort(void *low, const size_t n, const size_t nmemb,         \
+    int (*compare_func)(const void *a, const void *b),                       \
+    void *(*pivot_func) (const void *base, const size_t n, const size_t nmemb, \
+                       int (*compare_func)(const void *a, const void *b)))
+    {
     char *high = (char *) low + (n - 1) * nmemb;
 
     if (low < high) {
-        char *pi = (char *) partition(low, n, nmemb, compare_func);
+        char *pi = (char *) partition(low, n, nmemb, compare_func, pivot_func);
 
-        quick_sort(low, (size_t) ((char *)pi - (char *)low) / nmemb, nmemb, compare_func);
-        quick_sort(pi + 1 * nmemb, (size_t) ((char *) high - (char *) pi) / nmemb, nmemb, compare_func);
+        quick_sort(low, (size_t) ((char *)pi - (char *)low) / nmemb, nmemb, compare_func, pivot_func);
+        quick_sort(pi + 1 * nmemb, (size_t) ((char *) high - (char *) pi) / nmemb, nmemb, compare_func, pivot_func);
     }
 }

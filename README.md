@@ -8,7 +8,7 @@ Program that performs transformations on text
 ```shell
 git clone https://github.com/I1Va/Onegin.git
 
-make
+make build
 ```
 
 ## Usage

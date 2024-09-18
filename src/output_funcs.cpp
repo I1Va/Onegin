@@ -69,3 +69,27 @@ void printf_un_end(const char *ptr, const char end) {
 void fprint_border(FILE* stream) {
     fprintf(stream, RED "##############################################################################" WHT "\n");
 }
+
+void onegin_text_printf(const char* output_file_path, const text_data *data, err_code *ReturnErr) {
+    FILE *output_file_ptr = NULL;
+    if (output_file_path == NULL) {
+        output_file_ptr = stdout;
+    } else {
+        output_file_ptr = fopen(output_file_path, "wb");
+        if (output_file_ptr == NULL) {
+            *ReturnErr = ERR_FILE_OPEN;
+            printf("didn't find output file [%s]\n", output_file_path);
+            DEBUG_ERROR(ERR_FILE_OPEN);
+            return;
+        }
+    }
+    printf("path: %s\n", output_file_path);
+
+    fprint_text_arr(output_file_ptr, data->arr_sorted, data->n_lines, true, true);
+    fprint_border(output_file_ptr);
+
+    fprint_text_arr(output_file_ptr, data->arr_sorted_rev, data->n_lines, true, true);
+    fprint_border(output_file_ptr);
+
+    fprint_text_arr(output_file_ptr, data->arr_orig, data->n_lines, false, false);
+}

@@ -13,7 +13,11 @@ struct line_data {
 
 struct text_data {
     char *data;
+
     line_data *arr_orig;
+    line_data *arr_sorted;
+    line_data *arr_sorted_rev;
+
     size_t n_lines;
     size_t max_line_sz;
 };

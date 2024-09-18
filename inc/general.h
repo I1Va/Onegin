@@ -34,10 +34,9 @@
     })
 */
 
-#define TIMER_START {clock_t start = clock(); const int first_line = __LINE__;
-
-#define TIMER_END(stream) double seconds = (double)(clock() - start) / CLOCKS_PER_SEC; fprintf(stream, RED "processing lines[%d : %d] = %lg\n" WHT, first_line, __LINE__, seconds);};
-
+#define TIMER(code, stream) { \
+    clock_t start = clock(); code; \
+    double seconds = (double)(clock() - start) / CLOCKS_PER_SEC; fprintf(stream, RED "processing line%d] = %lg\n" WHT, __LINE__, seconds);}
 
 
 enum RETURN_STATES {

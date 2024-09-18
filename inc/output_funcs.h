@@ -13,4 +13,6 @@ void fprint_border(FILE* stream);
 
 void printf_un_end(const char *ptr, const char end);
 
+void onegin_text_printf(const char* output_file_path, const text_data *data, err_code *ReturnErr);
+
 #endif // OUTPUT_FUNCS_H

@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cctype>
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <stdio.h>
@@ -14,6 +15,55 @@
 #include "output_funcs.h"
 #include "error_processing.h"
 #include "args_processing.h"
+
+path_data *path_data_constructor(const char *src_inp_path, const char *src_out_path) {
+    assert(src_inp_path != NULL);
+
+    path_data *pathes = (path_data *) calloc(1, sizeof(path_data));
+    size_t inp_sz = 0;
+    size_t out_sz = 0;
+    char *input_file_path = NULL;
+    char *output_file_path = NULL;
+
+    if (pathes == NULL) {
+        DEBUG_ERROR(ERR_CALLOC);
+        return NULL;
+    }
+
+    inp_sz = strlen(src_inp_path);
+    out_sz = strlen(src_out_path);
+
+
+    input_file_path = (char *) calloc(inp_sz + 1, sizeof(char));
+    if (input_file_path == NULL) {
+        DEBUG_ERROR(ERR_CALLOC);
+        return NULL;
+    }
+
+    output_file_path = (char *) calloc(out_sz + 1, sizeof(char));
+    if (output_file_path == NULL) {
+        DEBUG_ERROR(ERR_CALLOC);
+        goto END_POINT_0;
+    }
+
+    strncpy(output_file_path, src_out_path, out_sz + 1);
+    strncpy(input_file_path, src_inp_path, inp_sz + 1);
+
+    pathes->input_path = input_file_path;
+    pathes->output_path = output_file_path;
+
+    return pathes;
+
+    END_POINT_0:
+    FREE(input_file_path)
+    return NULL;
+}
+
+void path_data_destructor(path_data *pathes) {
+    FREE(pathes->input_path)
+    FREE(pathes->output_path)
+    FREE(pathes)
+}
 
 void main_mode_launch(const char input_file_path[], const char output_file_path[], err_code *const ReturnErr) {
     err_code LastErr = ERR_OK;
@@ -46,8 +96,8 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
         goto END_POINT_2;
     }
 
-    TIMER_START quick_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp); TIMER_END(stdout)
-    TIMER_START qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev); TIMER_END(stdout)
+    quick_sort(sorted_arr, data->n_lines, sizeof(line_data), (cmp) str_cmp);
+    qsort(sorted_arr_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev);
 
     if (output_file_path == NULL) {
         output_file_ptr = stdout;
@@ -86,26 +136,18 @@ void main_mode_launch(const char input_file_path[], const char output_file_path[
     return;
 }
 
-void mode_launcher(const int argc, const char *argv[], err_code *const ReturnErr) {
-    err_code LastErr = ERR_OK;
-
+path_data *mode_launcher(const int argc, const char *argv[], err_code *const ReturnErr) {
     if (argc < 2) {
         *ReturnErr = ERR_ARGS;
         printf("input file was't entered\n");
         DEBUG_ERROR(ERR_ARGS);
-        return;
+        return NULL;
     }
 
     if (argc < 3) {
-        main_mode_launch(argv[1], NULL, &LastErr);
-        return;
+        path_data *pathes = path_data_constructor(argv[1], NULL);
+        return pathes;
     }
-
-    main_mode_launch(argv[1], argv[2], &LastErr);
-
-    if (LastErr != ERR_OK) {
-        *ReturnErr = LastErr;
-        DEBUG_ERROR(LastErr);
-        return;
-    }
+    path_data *pathes = path_data_constructor(argv[1], argv[2]);
+    return pathes;
 }
