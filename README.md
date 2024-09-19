@@ -16,11 +16,15 @@ make build
 ./build/onegin.out <input_file> <output_file>
 ```
 Before running, create an input data file in the root directory of the project and specify its name in <input_file>
-<!-- ![example_mode.png](images/example_mode.png)
+
+<!-- ![example_mode.png](images/example_mode.png) -->
 
 ```shell
-make testing
+make
+
+./build/onegin.out onegin_eng.txt out.txt
 ```
+<!--
 ![testing_mode.png](images/testing_mode.png)
 
 ```shell
@@ -81,10 +85,8 @@ doxygen doxygen.config
 
 Html file locates in `quadr_equ/html/index.html`
 
+
  -->
-
-
-
 
 
 

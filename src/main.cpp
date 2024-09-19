@@ -19,6 +19,8 @@
 
 
 int main(const int argc, const char *argv[]) {
+    srand((unsigned int) clock());
+
     err_code LastErr = ERR_OK;
     text_data* data = NULL;
     path_data *pathes = mode_launcher(argc, argv, &LastErr);
@@ -46,8 +48,11 @@ int main(const int argc, const char *argv[]) {
         goto END_POINT_2;
     }
 
-    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stdout);
-    TIMER(qsort(data->arr_sorted_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev), stdout);
+    // TODO: как не выводить stderr?
+    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_simp), stderr);
+    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_random), stderr);
+    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stderr); // FIXME: исправить random pivot
+    TIMER(qsort(data->arr_sorted_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev), stderr);
 
     onegin_text_printf(pathes->output_path, data, &LastErr);
     if (LastErr != ERR_OK) {

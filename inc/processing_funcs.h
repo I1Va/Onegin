@@ -47,17 +47,20 @@ bool letters_in_string(char *string, const char end_char);
 
 char *remove_extra_spaces(char *string);
 
-void *pivot_brut(void *base, const size_t n, const size_t nmemb,
+void *pivot_random(void *base, const size_t n, const size_t nmemb,
+    int (*compare_func)(const void *a, const void *b));
+
+void *pivot_simp(void *base, const size_t n, const size_t nmemb,
     int (*compare_func)(const void *a, const void *b));
 
 void *partition(void *low, size_t n, size_t nmemb,
     int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(const void *base, const size_t n, const size_t nmemb,
+    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
         int (*compare_func)(const void *a, const void *b)));
 
 void quick_sort(void *low, const size_t n, const size_t nmemb,        \
     int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(const void *base, const size_t n, const size_t nmemb,
+    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
         int (*compare_func)(const void *a, const void *b)
     ) = NULL);
 

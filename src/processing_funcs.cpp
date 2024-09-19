@@ -126,7 +126,7 @@ void bubble_sort(void *const base, const size_t size, const size_t nmemb, int (*
     }
 }
 
-void *pivot_brut(void *base, const size_t n, const size_t nmemb,
+void *pivot_random(void *base, const size_t n, const size_t nmemb,
     int (*compare_func)(const void *a, const void *b))
 {
     if (nmemb){};
@@ -134,21 +134,24 @@ void *pivot_brut(void *base, const size_t n, const size_t nmemb,
     if (compare_func == NULL) {
         return base;
     }
-    // char *high = (char *) base + (n - 1) * nmemb;
-    // size_t idx = (size_t) rand() % n;
-    // char *arr = (char *) calloc((size_t) (high - low + 1), sizeof(char));
-    // // bubble_sort(arr, n, nmemb, compare_func);
-    // // char *pivot = (arr + n / 2);
-    // // while (*low != *pivot) {
-    // //     low++;
-    // // }
-    // FREE(arr);
+    return (char *) base + ((size_t) rand() % (n - 1)) * nmemb;
+}
+
+void *pivot_simp(void *base, const size_t n, const size_t nmemb,
+    int (*compare_func)(const void *a, const void *b))
+{
+    if (nmemb){};
+    if (n){};
+    if (compare_func == NULL) {
+        return base;
+    }
+
     return base;
 }
 
 void *partition(void *low, size_t n, size_t nmemb,
     int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(const void *base, const size_t n, const size_t nmemb,
+    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
         int (*compare_func)(const void *a, const void *b)))
     {
     assert(n != 0);
@@ -165,6 +168,11 @@ void *partition(void *low, size_t n, size_t nmemb,
     for (char *j = (char *) low; j <= high - nmemb; j += 1 * nmemb) {
         if (compare_func((char *) j, (char *) pivot) < 0) {
             i += 1 * nmemb;
+            if (i == pivot) {
+                pivot = j;
+            } else if (j == pivot) {
+                pivot = i;
+            }
             swap_opt(i, j, nmemb);
         }
     }
@@ -175,7 +183,7 @@ void *partition(void *low, size_t n, size_t nmemb,
 
 void quick_sort(void *low, const size_t n, const size_t nmemb,         \
     int (*compare_func)(const void *a, const void *b),                       \
-    void *(*pivot_func) (const void *base, const size_t n, const size_t nmemb, \
+    void *(*pivot_func) (void *base, const size_t n, const size_t nmemb, \
                        int (*compare_func)(const void *a, const void *b)))
     {
     char *high = (char *) low + (n - 1) * nmemb;
