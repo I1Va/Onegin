@@ -2,6 +2,7 @@
 #define PROCESSING_FUNCS_H
 
 #include "storage_funcs.h"
+#include <cmath>
 #include <cstddef>
 #include <stdio.h>
 
@@ -48,20 +49,23 @@ bool letters_in_string(char *string, const char end_char);
 char *remove_extra_spaces(char *string);
 
 void *pivot_random(void *base, const size_t n, const size_t nmemb,
-    int (*compare_func)(const void *a, const void *b));
+    int (*compare_func)(const void *a, const void *b), const double conf_val);
 
 void *pivot_simp(void *base, const size_t n, const size_t nmemb,
-    int (*compare_func)(const void *a, const void *b));
+    int (*compare_func)(const void *a, const void *b), const double conf_val);
 
-void *partition(void *low, size_t n, size_t nmemb,
-    int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
-        int (*compare_func)(const void *a, const void *b)));
+void *pivot_propor(void *base, const size_t n, const size_t nmemb,
+    int (*compare_func)(const void *a, const void *b), const double conf_val);
 
-void quick_sort(void *low, const size_t n, const size_t nmemb,        \
-    int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
-        int (*compare_func)(const void *a, const void *b)
-    ) = NULL);
+void *partition(
+    void *low, size_t n, size_t nmemb,
+    int   (*compare_func)(const void *a, const void *b),
+    void *(*pivot_func  )(void *base, const size_t n, const size_t nmemb,
+        int (*compare_func)(const void *a, const void *b), const double conf_val), const double conf_val);
+
+int quick_sort(void *low, const size_t n, const size_t nmemb,         \
+    int (*compare_func)(const void *a, const void *b),                       \
+    void *(*pivot_func) (void *base, const size_t n, const size_t nmemb, \
+        int (*compare_func)(const void *a, const void *b), const double conf_val) = NULL, const double conf_val = NAN);
 
 #endif // PROCESSING_FUNCS_H

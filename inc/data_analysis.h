@@ -10,13 +10,17 @@ double get_abs_err(double measures[], double average, const size_t n);
 
 const size_t n_measures = 10;
 
+bool check_proportion(const double conf_val, const size_t n);
+
 #define TIMER(code, stream)                                                                         \
     {                                                                                               \
     double measures[n_measures] = {};                                                               \
     double average = 0;                                                                             \
     for (size_t i = 0; i < n_measures; i++) {                                                       \
         clock_t time_start_point = clock();                                                         \
-        {code;}                                                                                     \
+        if (code != 0) {                                                                            \
+        fprintf(stream, RED "processing line[%d] = (measure failure)\n" WHT, __LINE__); \
+        }                                                                                           \
         double seconds = (double)(clock() - time_start_point) / CLOCKS_PER_SEC;                     \
         measures[i] = seconds;                                                                      \
         average = average + seconds;                                                                \

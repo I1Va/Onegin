@@ -12,3 +12,9 @@ double get_abs_err(double measures[], double average, const size_t n) {
 
     return sqrt(sample_variance / (double) n);
 }
+
+bool check_proportion(const double conf_val, const size_t n) {
+    double raw_pivot = floor(conf_val * (double) n);
+
+    return (raw_pivot > 0 && size_t(raw_pivot) < n);
+}

@@ -50,11 +50,17 @@ int main(const int argc, const char *argv[]) {
     }
 
     // TODO: как не выводить stderr?
-    //TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_simp), stderr);
-    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_random), stderr);
-    // TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stderr); // FIXME: исправить random pivot
-    TIMER(qsort(data->arr_sorted_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev), stderr);
+    // TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_simp), stderr);
+    for (double coef = 0.1; coef < 0.8; coef += 0.04) {
+        if (check_proportion(coef, data->n_lines)) {
+            TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_propor, coef), stderr);
+        }
 
+    }
+    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_propor, -1), stderr);
+
+    // TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stderr); // FIXME: исправить random pivot
+    // TIMER(qsort(data->arr_sorted_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev), stderr);
     onegin_text_printf(pathes->output_path, data, &LastErr);
     if (LastErr != ERR_OK) {
         DEBUG_ERROR(LastErr);

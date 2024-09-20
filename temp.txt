@@ -1,0 +1,4 @@
+ invalid conversion from
+ ‘void* (*)(void*, size_t, size_t, int (*)(const void*, const void*))’
+
+ {aka ‘void* (*)(void*, long unsigned int, long unsigned int, int (*)(const void*, const void*)’} to ‘void* (*)(void*, size_t, size_t, int (*)(const void*, const void*), double)’ {aka ‘void* (*)(void*, long unsigned int, long unsigned int, int (*)(const void*, const void*), double)’

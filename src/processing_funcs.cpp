@@ -10,6 +10,7 @@
 #include <sys/param.h>
 
 #include "general.h"
+#include "data_analysis.h"
 #include "storage_funcs.h"
 
 #include "processing_funcs.h"
@@ -127,9 +128,10 @@ void bubble_sort(void *const base, const size_t size, const size_t nmemb, int (*
 }
 
 void *pivot_random(void *base, const size_t n, const size_t nmemb,
-    int (*compare_func)(const void *a, const void *b))
+    int (*compare_func)(const void *a, const void *b), const double conf_val)
 {
     if (nmemb){};
+    if (conf_val == NAN){};
     if (n){};
     if (compare_func == NULL) {
         return base;
@@ -137,10 +139,38 @@ void *pivot_random(void *base, const size_t n, const size_t nmemb,
     return (char *) base + ((size_t) rand() % (n - 1)) * nmemb;
 }
 
+void *pivot_propor(void *base, const size_t n, const size_t nmemb,
+    int (*compare_func)(const void *a, const void *b), const double conf_val)
+{
+    if (conf_val == NAN) {
+        debug("conf_val == NAN");
+        DEBUG_ERROR(ERR_WRONG_COEF)
+        return NULL;
+    }
+
+    double raw_pivot = floor(conf_val * (double) n);
+
+    // if (!check_proportion(conf_val, n)) {
+    //     debug("conf_val * n not in (0, n)");
+    //     DEBUG_ERROR(ERR_WRONG_COEF)
+    //     return NULL;
+    // }
+
+    if (nmemb){};
+    if (n){};
+    if (compare_func == NULL) {
+        return base;
+    }
+    return (char *) base +  size_t(raw_pivot) * nmemb;
+
+
+}
+
 void *pivot_simp(void *base, const size_t n, const size_t nmemb,
-    int (*compare_func)(const void *a, const void *b))
+    int (*compare_func)(const void *a, const void *b), const double conf_val)
 {
     if (nmemb){};
+    if (conf_val == NAN) {};
     if (n){};
     if (compare_func == NULL) {
         return base;
@@ -149,17 +179,22 @@ void *pivot_simp(void *base, const size_t n, const size_t nmemb,
     return base;
 }
 
-void *partition(void *low, size_t n, size_t nmemb,
-    int (*compare_func)(const void *a, const void *b),
-    void *(*pivot_func)(void *base, const size_t n, const size_t nmemb,
-        int (*compare_func)(const void *a, const void *b)))
+void *partition(
+    void *low, size_t n, size_t nmemb,
+    int   (*compare_func)(const void *a, const void *b),
+    void *(*pivot_func  )(void *base, const size_t n, const size_t nmemb,
+        int (*compare_func)(const void *a, const void *b), const double conf_val), const double conf_val)
     {
     assert(n != 0);
 
     char *high = (char *) low + (n - 1) * nmemb;
 
     if (pivot_func != NULL) {
-        char *new_pivot = (char *) pivot_func(low, n, nmemb, compare_func);
+        char *new_pivot = (char *) pivot_func(low, n, nmemb, compare_func, conf_val);
+        if (new_pivot == NULL) {
+            DEBUG_ERROR(ERR_NULLPTR);
+            return NULL;
+        }
         swap_opt(high, new_pivot, nmemb);
     }
 
@@ -178,17 +213,22 @@ void *partition(void *low, size_t n, size_t nmemb,
     return i + 1 * nmemb;
 }
 
-void quick_sort(void *low, const size_t n, const size_t nmemb,         \
+int quick_sort(void *low, const size_t n, const size_t nmemb,         \
     int (*compare_func)(const void *a, const void *b),                       \
     void *(*pivot_func) (void *base, const size_t n, const size_t nmemb, \
-                       int (*compare_func)(const void *a, const void *b)))
+                       int (*compare_func)(const void *a, const void *b), const double conf_val), const double conf_val)
     {
     char *high = (char *) low + (n - 1) * nmemb;
 
     if (low < high) {
-        char *pi = (char *) partition(low, n, nmemb, compare_func, pivot_func);
-
-        quick_sort(low, (size_t) ((char *)pi - (char *)low) / nmemb, nmemb, compare_func, pivot_func);
-        quick_sort(pi + 1 * nmemb, (size_t) ((char *) high - (char *) pi) / nmemb, nmemb, compare_func, pivot_func);
+        char *pi = (char *) partition(low, n, nmemb, compare_func, pivot_func, conf_val);
+        if (pi == NULL) {
+            DEBUG_ERROR(ERR_NULLPTR);
+            return -1;
+        }
+        quick_sort(low, (size_t) ((char *)pi - (char *)low) / nmemb, nmemb, compare_func, pivot_func, conf_val);
+        quick_sort(pi + 1 * nmemb, (size_t) ((char *) high - (char *) pi) / nmemb, nmemb, compare_func, pivot_func, conf_val);
     }
+
+    return 0;
 }

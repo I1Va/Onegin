@@ -16,6 +16,7 @@ enum err_code {
     ERR_FILE_OPEN = 7,
     ERR_FILE_CLOSE = 8,
     ERR_ARGS = 9,
+    ERR_WRONG_COEF = 10,
 };
 
 const char *get_descr(enum err_code err = ERR_UNKNOWN);
