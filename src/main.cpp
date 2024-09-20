@@ -49,9 +49,9 @@ int main(const int argc, const char *argv[]) {
     }
 
     // TODO: как не выводить stderr?
-    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_simp), stderr);
+    //TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_simp), stderr);
     TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp, pivot_random), stderr);
-    TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stderr); // FIXME: исправить random pivot
+    // TIMER(quick_sort(data->arr_sorted, data->n_lines, sizeof(line_data), (cmp) str_cmp), stderr); // FIXME: исправить random pivot
     TIMER(qsort(data->arr_sorted_rev, data->n_lines, sizeof(line_data), (cmp) str_cmp_rev), stderr);
 
     onegin_text_printf(pathes->output_path, data, &LastErr);

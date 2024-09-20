@@ -157,27 +157,24 @@ void *partition(void *low, size_t n, size_t nmemb,
     assert(n != 0);
 
     char *high = (char *) low + (n - 1) * nmemb;
-    char *pivot = (char *) high;
+
     if (pivot_func != NULL) {
-        pivot = (char *) pivot_func(low, n, nmemb, compare_func);
+        char *new_pivot = (char *) pivot_func(low, n, nmemb, compare_func);
+        swap_opt(high, new_pivot, nmemb);
     }
 
+    char *pivot = (char *) high;
 
     char *i = (char *) low - 1 * nmemb;
 
     for (char *j = (char *) low; j <= high - nmemb; j += 1 * nmemb) {
         if (compare_func((char *) j, (char *) pivot) < 0) {
             i += 1 * nmemb;
-            if (i == pivot) {
-                pivot = j;
-            } else if (j == pivot) {
-                pivot = i;
-            }
             swap_opt(i, j, nmemb);
         }
     }
-
     swap_opt(i + 1 * nmemb, high, nmemb);
+
     return i + 1 * nmemb;
 }
 
