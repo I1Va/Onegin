@@ -11,6 +11,7 @@
 #include "processing_funcs.h"
 #include "storage_funcs.h"
 #include "general.h"
+#include "data_analysis.h"
 #include "output_funcs.h"
 #include "error_processing.h"
 #include "args_processing.h"

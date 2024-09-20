@@ -1,6 +1,7 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include <cstddef>
 #include <time.h>
 
 #define GRN "\e[0;32m"
@@ -33,13 +34,6 @@
         ptr__                    \
     })
 */
-
-// FIXME: rename start
-#define TIMER(code, stream) {   \
-    clock_t start = clock();    \
-    {code;}                     \
-    double seconds = (double)(clock() - start) / CLOCKS_PER_SEC; fprintf(stream, RED "processing line[%d] = %lg\n" WHT, __LINE__, seconds);}
-
 
 enum RETURN_STATES {
     ReturnErrOR  = -1,
